@@ -1,12 +1,18 @@
 package pl.edu.pg.booksharing.Booksharing.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Genre {
 
@@ -19,7 +25,7 @@ public class Genre {
 
 
 
-    @OneToMany(mappedBy = "genre")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre")
     @JsonIgnore
     private List<Book> books = new ArrayList<>();
 

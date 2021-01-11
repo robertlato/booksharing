@@ -1,13 +1,19 @@
 package pl.edu.pg.booksharing.Booksharing.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Publisher {
 
@@ -27,7 +33,7 @@ public class Publisher {
     private Address address;
 
     @OneToMany(mappedBy = "publisher")
-    @JsonIgnore
+//    @JsonIgnore
     private List<Book> books = new ArrayList<>();
 
 

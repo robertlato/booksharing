@@ -1,10 +1,17 @@
 package pl.edu.pg.booksharing.Booksharing.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Author {
 
@@ -22,7 +29,7 @@ public class Author {
 
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "authors")
     private List<Book> books = new ArrayList<>();
 
 

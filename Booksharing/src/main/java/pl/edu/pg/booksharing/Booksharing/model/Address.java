@@ -1,9 +1,17 @@
 package pl.edu.pg.booksharing.Booksharing.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Address {
 
@@ -28,11 +36,11 @@ public class Address {
     private String houseNumber;
 
 
-
-
+    @JsonIgnore
     @OneToOne(mappedBy = "address")
     private SharePoint sharePoint;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "address")
     private Publisher publisher;
 

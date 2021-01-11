@@ -1,15 +1,20 @@
 package pl.edu.pg.booksharing.Booksharing.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Book {
 
@@ -17,15 +22,18 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+//    @DateTimeFormat
     @NotBlank
-    private java.sql.Timestamp releaseDate;
+    private java.sql.Date releaseDate;
+
+
 
     @NotBlank
     private String title;
 
     @NotBlank
-    @Size(min = 13, max = 13)
-    private String ISBN;
+    @Size(min = 12, max = 13)
+    private String isbn;
 
 
 
@@ -34,16 +42,16 @@ public class Book {
     private List<BookCopy> bookCopies = new ArrayList<>();
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
 
     @NotBlank
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Author> authors = new ArrayList<>();
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "GenreID")
     private Genre genre;
 
@@ -51,11 +59,9 @@ public class Book {
     private Description description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
-    @JsonIgnore
     private List<BookRating> bookRatings = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
-    @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
 
@@ -63,11 +69,11 @@ public class Book {
     public Book() {
     }
 
-    public Book(Timestamp releaseDate, String title, @Size(min = 13, max = 13) String ISBN, Publisher publisher,
+    public Book(Date releaseDate, String title, @Size(min = 13, max = 13) String isbn, Publisher publisher,
                 List<Author> authors, Genre genre) {
         this.releaseDate = releaseDate;
         this.title = title;
-        this.ISBN = ISBN;
+        this.isbn = isbn;
         this.publisher = publisher;
         this.authors = authors;
         this.genre = genre;
@@ -83,11 +89,11 @@ public class Book {
         this.id = id;
     }
 
-    public Timestamp getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Timestamp releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -99,12 +105,12 @@ public class Book {
         this.title = title;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public List<BookCopy> getBookCopies() {
