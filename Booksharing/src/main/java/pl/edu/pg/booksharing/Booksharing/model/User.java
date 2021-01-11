@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -15,17 +16,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
 
     @Size(min = 9, max = 15)
     private String phoneNumber;
 
+    @NotBlank
     @Email(regexp=".+@.+\\..+")
     private String email;
 
+    @NotBlank
     @Size(min = 5)
     private String password;
+
+
 
 
     @OneToMany(mappedBy = "user")
@@ -43,17 +51,58 @@ public class User {
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
+    private List<Borrowing> borrowings = new ArrayList<>();
+
+
+
 
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
+
+
+
+
+    public List<Borrowing> getBorrowings() {
+        return borrowings;
+    }
+
+    public void setBorrowings(List<Borrowing> borrowings) {
+        this.borrowings = borrowings;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
+    }
+
+    public List<BookRating> getBookRatings() {
+        return bookRatings;
+    }
+
+    public void setBookRatings(List<BookRating> bookRatings) {
+        this.bookRatings = bookRatings;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
 
     public Long getId() {
         return id;
