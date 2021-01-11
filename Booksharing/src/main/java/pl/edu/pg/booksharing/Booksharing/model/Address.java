@@ -22,7 +22,7 @@ public class Address {
     private String postalCode;
 
     @NotBlank
-    private String Street;
+    private String street;
 
     @NotBlank
     private String houseNumber;
@@ -46,7 +46,7 @@ public class Address {
         this.country = country;
         this.city = city;
         this.postalCode = postalCode;
-        Street = street;
+        this.street = street;
         this.houseNumber = houseNumber;
     }
 
@@ -85,13 +85,6 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public String getStreet() {
-        return Street;
-    }
-
-    public void setStreet(String street) {
-        Street = street;
-    }
 
     public String getHouseNumber() {
         return houseNumber;
@@ -115,5 +108,13 @@ public class Address {
 
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }
