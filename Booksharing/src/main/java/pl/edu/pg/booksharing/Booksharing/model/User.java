@@ -11,7 +11,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class User {
 
@@ -39,8 +41,8 @@ public class User {
 
 
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @JsonIgnore
     private List<SharePoint> sharePoints = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
@@ -169,5 +171,9 @@ public class User {
 
     public void setSharePoints(List<SharePoint> sharePoints) {
         this.sharePoints = sharePoints;
+    }
+
+    public void addSharePoint(SharePoint sharePoint) {
+        this.sharePoints.add(sharePoint);
     }
 }

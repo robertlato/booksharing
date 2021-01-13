@@ -1,9 +1,10 @@
-package pl.edu.pg.booksharing.Booksharing.service;
+package pl.edu.pg.booksharing.Booksharing.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.model.BookCopy;
 import pl.edu.pg.booksharing.Booksharing.repository.BookCopyRepository;
+import pl.edu.pg.booksharing.Booksharing.service.BookCopyService;
 
 import java.util.List;
 

@@ -1,15 +1,16 @@
-package pl.edu.pg.booksharing.Booksharing.service;
+package pl.edu.pg.booksharing.Booksharing.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
+import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import java.util.List;
 
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     @Autowired
     BookRepository bookRepository;
