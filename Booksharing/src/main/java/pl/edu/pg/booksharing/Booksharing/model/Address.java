@@ -19,20 +19,10 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-    @NotBlank
     private String country;
-
-    @NotBlank
     private String city;
-
-    @NotBlank
     private String postalCode;
-
-    @NotBlank
     private String street;
-
-    @NotBlank
     private String houseNumber;
 
 
