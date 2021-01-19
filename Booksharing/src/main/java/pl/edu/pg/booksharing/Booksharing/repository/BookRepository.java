@@ -8,4 +8,7 @@ import pl.edu.pg.booksharing.Booksharing.model.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     Book findById(long id);
+
+    Book findByIsbn(String isbn);
+
 }
