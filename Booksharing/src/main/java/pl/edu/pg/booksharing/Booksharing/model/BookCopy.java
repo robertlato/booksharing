@@ -45,8 +45,8 @@ public class BookCopy {
     public BookCopy() {
     }
 
-    public BookCopy(boolean isBorrowed, Book book, SharePoint sharePoint) {
-        this.isBorrowed = isBorrowed;
+    public BookCopy(Book book, SharePoint sharePoint) {
+        this.isBorrowed = false;
         this.book = book;
         this.sharePoint = sharePoint;
     }

@@ -32,7 +32,7 @@ public class SharePoint {
     private Address address;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sharePoint")
-    @JsonIgnore
+//    @JsonIgnore
     private List<BookCopy> bookCopies = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sharePoint")

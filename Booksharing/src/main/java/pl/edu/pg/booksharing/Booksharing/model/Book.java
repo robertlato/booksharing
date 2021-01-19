@@ -23,7 +23,6 @@ public class Book {
     private Long id;
 
 //    @DateTimeFormat
-    @NotBlank
     private java.sql.Date releaseDate;
 
 
@@ -46,7 +45,7 @@ public class Book {
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
 
-    @NotBlank
+    @NotNull
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Author> authors = new ArrayList<>();
 
