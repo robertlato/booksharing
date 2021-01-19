@@ -1,0 +1,7 @@
+### Front End ###
+
+booksharing-front/node_modules/
+booksharing-front/.eslintcache
+
+### DB ###
+booksharingDB.mv.db
