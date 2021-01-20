@@ -42,5 +42,11 @@ public class BookController {
         return bookService.findById(id);
     }
 
+    // get book by isbn
+    @GetMapping(path = "/api/book/{isbn}")
+    public Book getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
+        return bookService.findByIsbn(isbn);
+    }
+
 
 }
