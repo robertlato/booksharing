@@ -16,6 +16,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.modelmapper:modelmapper:2.3.3'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -25,6 +26,10 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
 	compile group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.0.Final'
+
+	// https://mvnrepository.com/artifact/org.modelmapper.extensions/modelmapper-spring
+	compile group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '2.3.3'
+
 
 
 }

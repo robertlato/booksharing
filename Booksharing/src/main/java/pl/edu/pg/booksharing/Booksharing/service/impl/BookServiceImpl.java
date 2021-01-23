@@ -3,12 +3,8 @@ package pl.edu.pg.booksharing.Booksharing.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
-import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
-import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
-import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
-import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
@@ -25,12 +21,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(Book book) throws BookAlreadyExistsException /*throws BookAlreadyExistsException*/ {
+    public Book save(Book book) throws BookAlreadyExistsException /*throws BookAlreadyExistsException*/ {
         if (bookRepository.findByIsbn(book.getIsbn()) != null) {
             throw new BookAlreadyExistsException("Book with ISBN: " + book.getIsbn() + " already exists");
         } else {
         bookRepository.save(book);
         }
+        return book;
     }
 
 
