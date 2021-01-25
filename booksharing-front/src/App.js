@@ -1,33 +1,28 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './App.css'
-import Navbar from './Components/Navbar/Navbar'
-import Auth from './Components/Authenticate/Auth'
-import Homepage from './Components/Homepage/Homepage'
-//setup redux
-import { Provider } from 'react-redux'
-import { getUser } from './actions/auth'
-import store from './store'
+import React from "react";
+import "./App.css";
+import Navbar from "./Components/Navbar/Navbar";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Homepage from "./Components/Homepage/Homepage";
+import AboutUs from "./Components/AboutUs/AboutUs";
+import Faq from "./Components/Faq/Faq";
+import Auth from "./Components/Authenticate/Auth";
 
-function App() {
-
-  useEffect(() => {
-    store.dispatch(getUser())
-  }, [])
-
-  return (
-    <Provider store={store}>
-      <Router>
-        <div className="App">
-          <Navbar />
-          <Switch>
-            <Route path="/" exact component={Homepage} />
-            <Route path="/auth" component={Auth} />
-          </Switch>
-        </div>
-      </Router>
-    </Provider>
-  );
+class App extends React.Component {
+    render() {
+        return (
+            <Router>
+                <div className="App">
+                    <Navbar />
+                    <Switch>
+                        <Route path="/" exact component={Homepage} />
+                        <Route path="/faq" component={Faq} />
+                        <Route path="/aboutus" component={AboutUs} />
+                        <Route path="/auth" component={Auth} />
+                    </Switch>
+                </div>
+            </Router>
+        );
+    }
 }
 
 export default App;

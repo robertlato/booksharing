@@ -1,4 +1,3 @@
-  
 .navbar {
     width: 100%;
     height: 140px;
@@ -11,38 +10,38 @@
     padding: 5px;
     /* border-bottom: 1px solid black; */
     box-shadow: 0px 0px 20px -5px rgba(0, 0, 0, 0.7);
-  }
+}
 
-  .navbar-logo-container {
+.navbar-logo-container {
     height: 50px;
     padding: 0 30px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .navbar-logo {
+}
+
+.navbar-logo {
     height: 90%;
-  }
-  
-  .navbar-list-container {
+}
+
+.navbar-list-container {
     position: absolute;
     left: 50vw;
     transform: translateX(-50%);
     height: 6%;
-  }
-  
-  .navbar-list {
+}
+
+.navbar-list {
     list-style: none;
     display: flex;
     font-size: 1.4rem;
     text-transform: uppercase;
     font-weight: 600;
     height: 100%;
-  }
-  
-  .navbar-list li a {
+}
+
+.navbar-list li a {
     display: flex;
     align-items: center;
     padding: 0 10px;
@@ -52,32 +51,31 @@
     height: 100%;
     box-shadow: inset 0px 0px 0px -1px rgba(0, 0, 0, 0.75);
     transition: 0.25s 0.1s ease box-shadow;
-  }
-  
-  .navbar-list li a:hover {
+}
+
+.navbar-list li a:hover {
     box-shadow: inset 0px -4px 0px -1px rgba(0, 0, 0, 0.75);
-  }
-  
-  .navbar-list li a.active {
+}
+
+.navbar-list li a.active {
     box-shadow: inset 0px -4px 0px -1px #0aaefb;
-  }
-  
-  .navbar-login {
+}
+
+.navbar-login {
     flex-grow: 1;
     text-align: right;
     padding-right: 30px;
     order: 3;
-  }
-  
-  .navbar-login a {
+}
+
+.navbar-login a {
     text-decoration: none;
     color: black;
     font-size: 1.7rem;
     font-weight: 700;
     padding: 5px;
-  }
-  
-  .navbar-login a:hover {
+}
+
+.navbar-login a:hover {
     text-decoration: underline;
-  }
-  
+}
