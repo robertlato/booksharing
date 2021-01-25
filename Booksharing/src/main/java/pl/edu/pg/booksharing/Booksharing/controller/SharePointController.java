@@ -7,6 +7,7 @@ import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
 
 import java.util.List;
 
+@CrossOrigin(origins={ "http://localhost:8889", "http://localhost:3000" }, maxAge = 3600, allowedHeaders = "*")
 @RestController
 public class SharePointController {
 

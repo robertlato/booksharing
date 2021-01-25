@@ -1,10 +1,12 @@
 package pl.edu.pg.booksharing.Booksharing.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BookDto;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
@@ -14,6 +16,9 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private BookRepository bookRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
@@ -55,5 +60,19 @@ public class BookServiceImpl implements BookService {
         } else {
             return bookRepository.findByIsbn(isbn);
         }
+    }
+
+    @Override
+    public Book convertToEntity(BookDto bookDto) {
+        Book book = modelMapper.map(bookDto, Book.class);
+
+        return book;
+    }
+
+    @Override
+    public BookDto convertToDto(Book book) {
+        BookDto bookDto = modelMapper.map(book, BookDto.class);
+
+        return bookDto;
     }
 }
