@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
         if (book == null) {
             throw new ResourceNotFoundException("Book: " + id + " not found.");
         } else {
-            return bookRepository.findById(id);
+            return book;
         }
     }
 
@@ -58,7 +58,7 @@ public class BookServiceImpl implements BookService {
         if (book == null) {
             throw new ResourceNotFoundException("Book with ISBN: " + isbn + " not found.");
         } else {
-            return bookRepository.findByIsbn(isbn);
+            return book;
         }
     }
 

@@ -60,7 +60,7 @@ public class BookController {
     }
 
     // get book by isbn
-    @GetMapping(path = "/api/book/{isbn}")
+    @GetMapping(path = "/api/book/isbn/{isbn}")
     public BookDto getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
         return bookService.convertToDto(bookService.findByIsbn(isbn));
     }

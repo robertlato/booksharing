@@ -13,7 +13,7 @@ public class AuthorDto {
 
     private String lastName;
 
-    private List<BookDto> books = new ArrayList<>();
+    //private List<BookDto> books = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -39,13 +39,13 @@ public class AuthorDto {
         this.secondName = secondName;
     }
 
-    public List<BookDto> getBooks() {
+/*    public List<BookDto> getBooks() {
         return books;
     }
 
     public void setBooks(List<BookDto> books) {
         this.books = books;
-    }
+    }*/
 
     public String getLastName() {
         return lastName;
