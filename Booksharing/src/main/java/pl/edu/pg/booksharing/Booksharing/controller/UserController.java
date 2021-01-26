@@ -27,8 +27,11 @@ public class UserController {
     }
 
     @GetMapping(path = "/api/user/{id}")
-    public User getUser(@PathVariable long id) {
+    public User getUserById(@PathVariable long id) {
         return userService.findById(id);
     }
+
+    @GetMapping(path = "/api/user/mail/{email}")
+    public User getUserByMail(@PathVariable String email){return userService.findByEmail(email);}
 }
 
