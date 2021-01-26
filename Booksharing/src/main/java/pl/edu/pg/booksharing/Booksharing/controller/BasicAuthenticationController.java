@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pg.booksharing.Booksharing.config.AuthenticationBean;
 
-@CrossOrigin(origins={ "http://localhost:8889", "http://localhost:3000" })
+@CrossOrigin(origins={ "http://localhost:8889", "http://localhost:3000" }, maxAge = 3600, allowedHeaders = "*")
 @RestController
 public class BasicAuthenticationController {
 

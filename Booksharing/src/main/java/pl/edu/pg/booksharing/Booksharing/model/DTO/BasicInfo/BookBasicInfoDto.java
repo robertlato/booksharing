@@ -1,21 +1,21 @@
-package pl.edu.pg.booksharing.Booksharing.model.DTO;
+package pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo;
 
 import pl.edu.pg.booksharing.Booksharing.model.Genre;
-import pl.edu.pg.booksharing.Booksharing.model.Publisher;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDto {
+public class BookBasicInfoDto {
     private Long id;
 
     private String title;
 
     private String isbn;
 
-    private List<AuthorDto> authors = new ArrayList<>();
+    private List<AuthorInfoForBookDto> authors = new ArrayList<>();
 
-    private Publisher publisher;
+    private PublisherInfoForBookDto publisherInfoForBookDto;
 
     private Genre genre;
 
@@ -43,20 +43,20 @@ public class BookDto {
         this.isbn = isbn;
     }
 
-    public List<AuthorDto> getAuthors() {
+    public List<AuthorInfoForBookDto> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<AuthorDto> authors) {
+    public void setAuthors(List<AuthorInfoForBookDto> authors) {
         this.authors = authors;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
+    public PublisherInfoForBookDto getPublisher() {
+        return publisherInfoForBookDto;
     }
 
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
+    public void setPublisher(PublisherInfoForBookDto publisherInfoForBookDto) {
+        this.publisherInfoForBookDto = publisherInfoForBookDto;
     }
 
     public Genre getGenre() {
