@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
+import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 import pl.edu.pg.booksharing.Booksharing.model.User;
@@ -51,13 +52,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findByEmail(String email) throws ResourceNotFoundException {
+        if (userRepository.findByEmail(email) == null) {
+            throw new ResourceNotFoundException("User with " + email + " email is not found");
+        } else {
+            return userRepository.findByEmail(email);
+        }
     }
 
     @Override
-    public User findById(long id) {
-        return userRepository.findById(id);
+    public User findById(long id) throws ResourceNotFoundException {
+        if (userRepository.findById(id) == null) {
+            throw new ResourceNotFoundException("User with id: " + id + "  is not found");
+        } else {
+            return userRepository.findById(id);
+        }
     }
 }
 

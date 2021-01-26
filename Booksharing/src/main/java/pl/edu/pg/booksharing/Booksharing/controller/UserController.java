@@ -3,6 +3,7 @@ package pl.edu.pg.booksharing.Booksharing.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
+import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
 import pl.edu.pg.booksharing.Booksharing.service.UserService;
@@ -27,11 +28,14 @@ public class UserController {
     }
 
     @GetMapping(path = "/api/user/{id}")
-    public User getUserById(@PathVariable long id) {
+    public User getUserById(@PathVariable long id) throws ResourceNotFoundException {
         return userService.findById(id);
     }
 
     @GetMapping(path = "/api/user/mail/{email}")
-    public User getUserByMail(@PathVariable String email){return userService.findByEmail(email);}
+    public User getUserByMail(@PathVariable String email) throws ResourceNotFoundException {
+        return userService.findByEmail(email);
+    }
+
 }
 
