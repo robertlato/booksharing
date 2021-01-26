@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
-import pl.edu.pg.booksharing.Booksharing.model.DTO.BookDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import javax.validation.Valid;
@@ -33,35 +33,35 @@ public class BookController {
 
     // add new book
     @PostMapping(path = "/api/book")
-    public BookDto addBookDto(@Valid @RequestBody BookDto bookDto) throws BookAlreadyExistsException {
-        Book book = bookService.convertToEntity(bookDto);
+    public BookBasicInfoDto addBookDto(@Valid @RequestBody BookBasicInfoDto bookBasicInfoDto) throws BookAlreadyExistsException {
+        Book book = bookService.convertToEntity(bookBasicInfoDto);
         Book bookAdded = bookService.save(book);
         return bookService.convertToDto(bookAdded);
     }
 
-    // TODO getting all books with DTO
-/*    @GetMapping(path = "api/books")
-    public List<BookDto> getAllBooks(){
+
+   @GetMapping(path = "api/books")
+    public List<BookBasicInfoDto> getAllBooks(){
         List<Book> books = bookService.findAll();
 
-        return books.stream().map(this::convertToDto).collect(Collectors.toList());
-    }*/
+        return books.stream().map(book -> modelMapper.map(book, BookBasicInfoDto.class)).collect(Collectors.toList());
+    }
 
     // get all books
-    @GetMapping(path = "api/books")
+ /*   @GetMapping(path = "api/books")
     public List<Book> getAllBooks(){
         return bookService.findAll();
-    }
+    }*/
 
     // get book by id
     @GetMapping(path = "/api/book/{id}")
-    public BookDto getBookByID(@PathVariable long id) throws ResourceNotFoundException {
+    public BookBasicInfoDto getBookByID(@PathVariable long id) throws ResourceNotFoundException {
         return bookService.convertToDto(bookService.findById(id));
     }
 
     // get book by isbn
     @GetMapping(path = "/api/book/isbn/{isbn}")
-    public BookDto getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
+    public BookBasicInfoDto getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
         return bookService.convertToDto(bookService.findByIsbn(isbn));
     }
 

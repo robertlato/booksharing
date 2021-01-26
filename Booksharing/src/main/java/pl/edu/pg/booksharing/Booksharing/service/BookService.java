@@ -3,7 +3,7 @@ package pl.edu.pg.booksharing.Booksharing.service;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
-import pl.edu.pg.booksharing.Booksharing.model.DTO.BookDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BookBasicInfoDto;
 
 import java.util.List;
 
@@ -17,6 +17,6 @@ public interface BookService {
 
     Book findByIsbn(String isbn) throws ResourceNotFoundException;
 
-    BookDto convertToDto(Book book);
-    Book convertToEntity(BookDto bookDto);
+    BookBasicInfoDto convertToDto(Book book);
+    Book convertToEntity(BookBasicInfoDto bookBasicInfoDto);
 }

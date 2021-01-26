@@ -3,7 +3,7 @@ package pl.edu.pg.booksharing.Booksharing.model.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthorDto {
+public class AuthorInfoForBookDto {
 
     private Long id;
 
@@ -12,8 +12,6 @@ public class AuthorDto {
     private String secondName;
 
     private String lastName;
-
-    //private List<BookDto> books = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -38,14 +36,6 @@ public class AuthorDto {
     public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
-
-/*    public List<BookDto> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookDto> books) {
-        this.books = books;
-    }*/
 
     public String getLastName() {
         return lastName;

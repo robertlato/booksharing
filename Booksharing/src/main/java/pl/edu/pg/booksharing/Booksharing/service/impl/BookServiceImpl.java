@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
-import pl.edu.pg.booksharing.Booksharing.model.DTO.BookDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
@@ -63,16 +63,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book convertToEntity(BookDto bookDto) {
-        Book book = modelMapper.map(bookDto, Book.class);
+    public Book convertToEntity(BookBasicInfoDto bookBasicInfoDto) {
+        Book book = modelMapper.map(bookBasicInfoDto, Book.class);
 
         return book;
     }
 
     @Override
-    public BookDto convertToDto(Book book) {
-        BookDto bookDto = modelMapper.map(book, BookDto.class);
+    public BookBasicInfoDto convertToDto(Book book) {
+        BookBasicInfoDto bookBasicInfoDto = modelMapper.map(book, BookBasicInfoDto.class);
 
-        return bookDto;
+        return bookBasicInfoDto;
     }
 }
