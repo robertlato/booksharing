@@ -2,9 +2,12 @@ import React from "react";
 import logo from "../../images/logo.jpg";
 import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
+import AuthenticationService from "../../service/AuthenticationService";
 
 class Navbar extends React.Component {
     render() {
+        const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
+
         return (
             <nav className="navbar">
                 <Link to="/" className="navbar-logo-container">
@@ -15,12 +18,14 @@ class Navbar extends React.Component {
                     />
                 </Link>
                 <div className="navbar-login">
-                    {/* {auth.isAuthenticated ? (
-                    <Link to="/auth/profile">Mój profil</Link>
-                ) : (
-                        <Link to="/auth/login">Zaloguj się</Link>
-                    )} */}
-                    <Link to="/auth/login">Zaloguj się</Link>
+                    {isUserLoggedIn ? (
+                        <div>
+                            <Link to="/profile">Mój profil</Link>
+                            <Link to="/logout">Wyloguj</Link>
+                        </div>
+                    ) : (
+                        <Link to="/login">Zaloguj się</Link>
+                    )}
                 </div>
                 <div className="navbar-list-container">
                     <ul className="navbar-list">
@@ -35,11 +40,7 @@ class Navbar extends React.Component {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink
-                                exact
-                                to="/aboutus"
-                                activeClassName="active"
-                            >
+                            <NavLink to="/aboutus" activeClassName="active">
                                 O nas
                             </NavLink>
                         </li>

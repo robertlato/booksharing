@@ -11,12 +11,13 @@ class Auth extends React.Component {
                 <div className="auth-container">
                     <div className="auth-background"></div>
                     <div className="auth-form">
-                        <Route path="/auth/login" exact component={Login} />
                         <Route
-                            path="/auth/register"
+                            path="/login"
                             exact
-                            component={Register}
+                            component={Login}
+                            changeIsLogged={this.props.changeIsLogged}
                         />
+                        <Route path="/register" exact component={Register} />
                     </div>
                 </div>
             </div>

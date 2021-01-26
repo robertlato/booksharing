@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import AuthenticationService from "../../service/AuthenticationService";
 
 class Login extends React.Component {
@@ -9,6 +9,7 @@ class Login extends React.Component {
         this.state = {
             username: "",
             password: "",
+            isLogged: false,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -34,8 +35,8 @@ class Login extends React.Component {
                     this.state.password
                 );
                 console.log("dobre pasy");
-                //this.props.history.push(`/homepage`);
             })
+            .then(() => this.setState({ isLogged: true }))
             .catch(() => {
                 console.log(this.state.username);
                 console.log(this.state.password);
@@ -46,34 +47,38 @@ class Login extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <h1>Logowanie</h1>
-                <h2>
-                    Nie masz konta?{" "}
-                    <Link to="/auth/register">Zarejestruj się</Link>
-                </h2>
-                <form>
-                    <label>
-                        <p>Login</p>
-                        <input
-                            type="text"
-                            name="username"
-                            onChange={this.onChange}
-                        />
-                    </label>
-                    <label>
-                        <p>Hasło</p>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={this.onChange}
-                        />
-                    </label>
-                    <button onClick={this.onSubmit}>Zaloguj się</button>
-                </form>
-            </div>
-        );
+        if (this.state.isLogged) {
+            return <Redirect to="/" />;
+        } else {
+            return (
+                <div>
+                    <h1>Logowanie</h1>
+                    <h2>
+                        Nie masz konta?{" "}
+                        <Link to="/register">Zarejestruj się</Link>
+                    </h2>
+                    <form>
+                        <label>
+                            <p>Login</p>
+                            <input
+                                type="text"
+                                name="username"
+                                onChange={this.onChange}
+                            />
+                        </label>
+                        <label>
+                            <p>Hasło</p>
+                            <input
+                                type="password"
+                                name="password"
+                                onChange={this.onChange}
+                            />
+                        </label>
+                        <button onClick={this.onSubmit}>Zaloguj się</button>
+                    </form>
+                </div>
+            );
+        }
     }
 }
 

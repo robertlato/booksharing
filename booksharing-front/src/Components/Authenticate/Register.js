@@ -7,7 +7,7 @@ class Register extends React.Component {
             <>
                 <h1>Rejestracja</h1>
                 <h2>
-                    Masz już konto? <Link to="/auth/login">Zaloguj się</Link>
+                    Masz już konto? <Link to="/login">Zaloguj się</Link>
                 </h2>
                 <form>
                     <label>

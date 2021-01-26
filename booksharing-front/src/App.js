@@ -5,6 +5,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Homepage from "./Components/Homepage/Homepage";
 import AboutUs from "./Components/AboutUs/AboutUs";
 import Faq from "./Components/Faq/Faq";
+import ProfilePage from "./Components/ProfilePage/ProfilePage";
+import AuthenticatedRoute from "./Components/Authenticate/AuthenticatedRoute";
+import Logout from "./Components/Logout/Logout";
 import Auth from "./Components/Authenticate/Auth";
 
 class App extends React.Component {
@@ -17,7 +20,18 @@ class App extends React.Component {
                         <Route path="/" exact component={Homepage} />
                         <Route path="/faq" component={Faq} />
                         <Route path="/aboutus" component={AboutUs} />
-                        <Route path="/auth" component={Auth} />
+                        <Route path="/login" component={Auth} />
+                        <Route path="/register" component={Auth} />
+                        <AuthenticatedRoute
+                            path="/logout"
+                            exact
+                            component={Logout}
+                        />
+                        <AuthenticatedRoute
+                            path="/profile"
+                            exact
+                            component={ProfilePage}
+                        />
                     </Switch>
                 </div>
             </Router>
