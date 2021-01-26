@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
-import pl.edu.pg.booksharing.Booksharing.model.DTO.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 

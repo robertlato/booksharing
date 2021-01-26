@@ -1,7 +1,4 @@
-package pl.edu.pg.booksharing.Booksharing.model.DTO;
-
-import java.util.ArrayList;
-import java.util.List;
+package pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo;
 
 public class AuthorInfoForBookDto {
 
