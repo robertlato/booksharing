@@ -6,8 +6,6 @@ public class AuthorInfoForBookDto {
 
     private String firstName;
 
-    private String secondName;
-
     private String lastName;
 
     public Long getId() {
@@ -24,14 +22,6 @@ public class AuthorInfoForBookDto {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
     }
 
     public String getLastName() {

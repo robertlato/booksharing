@@ -33,7 +33,7 @@ public class BookController {
 
     // add new book
     @PostMapping(path = "/api/book")
-    public BookBasicInfoDto addBookDto(@Valid @RequestBody BookBasicInfoDto bookBasicInfoDto) throws BookAlreadyExistsException {
+    public BookBasicInfoDto addBookDto(@Valid @RequestBody BookBasicInfoDto bookBasicInfoDto) {
         Book book = bookService.convertToEntity(bookBasicInfoDto);
         Book bookAdded = bookService.save(book);
         return bookService.convertToDto(bookAdded);

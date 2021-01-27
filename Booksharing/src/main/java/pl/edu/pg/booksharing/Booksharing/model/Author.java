@@ -25,7 +25,6 @@ public class Author {
     @NotBlank
     private String lastName;
 
-    private String secondName;
 
 
 
@@ -37,10 +36,9 @@ public class Author {
     public Author() {
     }
 
-    public Author(String firstName, String lastName, String secondName) {
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.secondName = secondName;
     }
 
 
@@ -67,14 +65,6 @@ public class Author {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
     }
 
     public List<Book> getBooks() {
