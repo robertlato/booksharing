@@ -6,4 +6,5 @@ import pl.edu.pg.booksharing.Booksharing.model.Publisher;
 
 @Repository
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
+    Publisher findByName(String name);
 }
