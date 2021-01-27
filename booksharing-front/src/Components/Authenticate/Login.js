@@ -37,6 +37,7 @@ class Login extends React.Component {
                 console.log("dobre pasy");
             })
             .then(() => this.setState({ isLogged: true }))
+            .then(() => window.location.reload())
             .catch(() => {
                 console.log(this.state.username);
                 console.log(this.state.password);
