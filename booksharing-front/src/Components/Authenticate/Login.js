@@ -41,8 +41,8 @@ class Login extends React.Component {
                 console.log(this.state.username);
                 console.log(this.state.password);
                 console.log("złe pasy");
-                this.setState({ showSuccessMessage: false });
-                this.setState({ hasLoginFailed: true });
+                // this.setState({ showSuccessMessage: false });
+                // this.setState({ hasLoginFailed: true });
             });
     }
 
@@ -54,7 +54,7 @@ class Login extends React.Component {
                 <div>
                     <h1>Logowanie</h1>
                     <h2>
-                        Nie masz konta?{" "}
+                        Nie masz konta?
                         <Link to="/register">Zarejestruj się</Link>
                     </h2>
                     <form>
