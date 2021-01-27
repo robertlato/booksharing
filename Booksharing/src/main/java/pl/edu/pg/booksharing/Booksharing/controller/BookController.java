@@ -40,6 +40,7 @@ public class BookController {
     }
 
 
+    // get all books
    @GetMapping(path = "api/books")
     public List<BookBasicInfoDto> getAllBooks(){
         List<Book> books = bookService.findAll();
