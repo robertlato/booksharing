@@ -9,6 +9,7 @@ import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import AuthenticatedRoute from "./Components/Authenticate/AuthenticatedRoute";
 import Logout from "./Components/Logout/Logout";
 import Auth from "./Components/Authenticate/Auth";
+import Welcome from "./Components/Welcome/Welcome";
 
 class App extends React.Component {
     render() {
@@ -22,6 +23,7 @@ class App extends React.Component {
                         <Route path="/aboutus" component={AboutUs} />
                         <Route path="/login" component={Auth} />
                         <Route path="/register" component={Auth} />
+                        <Route path="/welcome" component={Welcome} />
                         <AuthenticatedRoute
                             path="/logout"
                             exact
@@ -29,6 +31,26 @@ class App extends React.Component {
                         />
                         <AuthenticatedRoute
                             path="/profile"
+                            exact
+                            component={ProfilePage}
+                        />
+                        <AuthenticatedRoute
+                            path="/searchbook"
+                            exact
+                            component={ProfilePage}
+                        />
+                        <AuthenticatedRoute
+                            path="/mylibrary"
+                            exact
+                            component={ProfilePage}
+                        />
+                        <AuthenticatedRoute
+                            path="/addbook"
+                            exact
+                            component={ProfilePage}
+                        />
+                        <AuthenticatedRoute
+                            path="/profilesettings"
                             exact
                             component={ProfilePage}
                         />

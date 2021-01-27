@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import AuthenticationService from "../../service/AuthenticationService";
 import axios from "axios";
 
 class Register extends React.Component {
@@ -29,21 +28,6 @@ class Register extends React.Component {
 
     async onSubmit(event) {
         event.preventDefault();
-
-        console.log(this.state.firstname);
-        console.log(this.state.lastname);
-        console.log(this.state.email);
-        console.log(this.state.password);
-        console.log(this.state.phonenumber);
-        // let res = await axios.post(
-        //     "https://jsonplaceholder.typicode.com/posts",
-        //     {
-        //         title: "nazwa moja",
-        //         body: "treść moja",
-        //         userId: 100,
-        //     }
-        // );
-        // console.log(res);
 
         axios
             .post("http://localhost:8889/api/register", {
