@@ -5,15 +5,11 @@ import AuthenticationService from "../../service/AuthenticationService";
 class Logout extends React.Component {
     componentDidMount() {
         AuthenticationService.logout();
+        window.location.reload();
     }
 
     render() {
-        return (
-            <div>
-                <h1>You are logged out</h1>
-                <h3>Thank You for Using Our Application.</h3>
-            </div>
-        );
+        return <div></div>;
     }
 }
 
