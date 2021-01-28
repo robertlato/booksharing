@@ -7,6 +7,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepointDto;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import javax.validation.Valid;
@@ -64,6 +65,13 @@ public class BookController {
     @GetMapping(path = "/api/book/isbn/{isbn}")
     public BookBasicInfoDto getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
         return bookService.convertToDto(bookService.findByIsbn(isbn));
+    }
+
+    @GetMapping(path = "/api/sharepoint/books/{email}")
+    public List<BookSharepointDto> getBooksFromSharepoint(@PathVariable String email) throws ResourceNotFoundException {
+      List<Book> books = bookService.findByOwnerEmail(email);
+
+        return books.stream().map(book -> modelMapper.map(book, BookSharepointDto.class)).collect(Collectors.toList());
     }
 
 }

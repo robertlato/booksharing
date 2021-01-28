@@ -8,10 +8,8 @@ import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.*;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.AuthorInfoForBookDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
-import pl.edu.pg.booksharing.Booksharing.repository.AuthorRepository;
-import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
-import pl.edu.pg.booksharing.Booksharing.repository.PublisherRepository;
-import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.SharepointInfoDto;
+import pl.edu.pg.booksharing.Booksharing.repository.*;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import java.util.ArrayList;
@@ -24,15 +22,19 @@ public class BookServiceImpl implements BookService {
     private UserRepository userRepository;
     private PublisherRepository publisherRepository;
     private AuthorRepository authorRepository;
+    private SharePointRepository sharePointRepository;
     @Autowired
     ModelMapper modelMapper;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, UserRepository userRepository, PublisherRepository publisherRepository, AuthorRepository authorRepository) {
+    public BookServiceImpl(BookRepository bookRepository, UserRepository userRepository,
+                           PublisherRepository publisherRepository, AuthorRepository authorRepository,
+                           SharePointRepository sharePointRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
+        this.sharePointRepository = sharePointRepository;
     }
 
     @Override
@@ -68,6 +70,19 @@ public class BookServiceImpl implements BookService {
             throw new ResourceNotFoundException("Book with ISBN: " + isbn + " not found.");
         } else {
             return book;
+        }
+    }
+
+    @Override
+    public List<Book> findByOwnerEmail(String email) throws ResourceNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new ResourceNotFoundException("User " + email + "do not exists");
+        } else {
+            SharePoint sharePoint = user.getSharePoints().get(0);
+            List<Book> books = sharePoint.getBooks();
+
+            return books;
         }
     }
 

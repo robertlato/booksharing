@@ -17,6 +17,8 @@ public interface BookService {
 
     Book findByIsbn(String isbn) throws ResourceNotFoundException;
 
+    List<Book> findByOwnerEmail(String email) throws ResourceNotFoundException;
+
     BookBasicInfoDto convertToDto(Book book);
     Book convertToEntity(BookBasicInfoDto bookBasicInfoDto);
 }
