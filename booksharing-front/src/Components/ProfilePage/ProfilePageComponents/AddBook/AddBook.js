@@ -31,9 +31,6 @@ class AddBook extends React.Component {
     async onSubmit(event) {
         event.preventDefault();
 
-        console.log(this.state);
-        console.log("to wyżej to log(this.state)");
-
         axios
             .post(
                 "http://localhost:8889/api/book",
@@ -56,16 +53,17 @@ class AddBook extends React.Component {
                     sharePointOwnerEmail: this.state.sharePointOwnerEmail,
                 },
                 {
-                    auth: {
-                        username: "robert@lato.com",
-                        password: "testowe",
+                    headers: {
+                        authorization:
+                            "Basic " + localStorage.getItem("userToken"),
                     },
                 }
             )
             .then((res) => {
-                window.alert("Dodano książkę!");
-                // console.log("książka dodana");
-                // console.log(res);
+                if (res.status === 200) {
+                    window.alert("Dodano książkę!");
+                    document.getElementById("book-form").reset();
+                }
             })
             .catch((error) => {
                 console.log("nie dodało książki");
@@ -77,7 +75,7 @@ class AddBook extends React.Component {
         return (
             <div>
                 <h1>Dodaj książkę</h1>
-                <form>
+                <form id="book-form">
                     <label>
                         <p>Tytuł</p>
                         <input
