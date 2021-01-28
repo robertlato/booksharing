@@ -1,5 +1,6 @@
 package pl.edu.pg.booksharing.Booksharing.service;
 
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.SharepointInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface SharePointService {
     SharePoint findById(long id);
 
     void update(SharePoint sharePoint);
+
+    SharepointInfoDto convertToDto(SharePoint sharePoint);
 }

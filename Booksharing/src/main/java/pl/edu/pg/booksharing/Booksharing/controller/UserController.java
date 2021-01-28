@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.User;
-import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
 import pl.edu.pg.booksharing.Booksharing.service.UserService;
 
 import javax.validation.Valid;

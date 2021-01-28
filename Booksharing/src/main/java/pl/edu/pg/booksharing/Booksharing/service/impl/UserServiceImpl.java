@@ -1,11 +1,13 @@
 package pl.edu.pg.booksharing.Booksharing.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Address;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.UserSharepointDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private SharePointService sharePointService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, SharePointService sharePointService,
@@ -67,6 +72,13 @@ public class UserServiceImpl implements UserService {
         } else {
             return userRepository.findById(id);
         }
+    }
+
+    @Override
+    public UserSharepointDto convertToDto(User user) {
+        UserSharepointDto userSharepointDto = modelMapper.map(user, UserSharepointDto.class);
+
+        return userSharepointDto;
     }
 }
 
