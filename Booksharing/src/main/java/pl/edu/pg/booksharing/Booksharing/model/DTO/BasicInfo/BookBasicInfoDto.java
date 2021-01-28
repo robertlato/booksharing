@@ -3,11 +3,12 @@ package pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo;
 import pl.edu.pg.booksharing.Booksharing.model.Genre;
 
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookBasicInfoDto {
-    private Long id;
+//    private Long id;
 
     private String title;
 
@@ -15,16 +16,52 @@ public class BookBasicInfoDto {
 
     private List<AuthorInfoForBookDto> authors = new ArrayList<>();
 
-    private PublisherInfoForBookDto publisherInfoForBookDto;
+    private PublisherInfoForBookDto publisher;
 
     private Genre genre;
 
-    public Long getId() {
-        return id;
+    private String sharePointOwnerEmail;
+
+    private java.sql.Date releaseDate;
+
+
+    public BookBasicInfoDto() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public BookBasicInfoDto(String title, String isbn, List<AuthorInfoForBookDto> authors,
+                            PublisherInfoForBookDto publisher, Genre genre, String sharePointOwnerEmail, Date releaseDate) {
+        this.title = title;
+        this.isbn = isbn;
+        this.authors = authors;
+        this.publisher = publisher;
+        this.genre = genre;
+        this.sharePointOwnerEmail = sharePointOwnerEmail;
+        this.releaseDate = releaseDate;
+    }
+
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public PublisherInfoForBookDto getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(PublisherInfoForBookDto publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getSharePointOwnerEmail() {
+        return sharePointOwnerEmail;
+    }
+
+    public void setSharePointOwnerEmail(String sharePointOwnerEmail) {
+        this.sharePointOwnerEmail = sharePointOwnerEmail;
     }
 
     public String getTitle() {
@@ -49,14 +86,6 @@ public class BookBasicInfoDto {
 
     public void setAuthors(List<AuthorInfoForBookDto> authors) {
         this.authors = authors;
-    }
-
-    public PublisherInfoForBookDto getPublisher() {
-        return publisherInfoForBookDto;
-    }
-
-    public void setPublisher(PublisherInfoForBookDto publisherInfoForBookDto) {
-        this.publisherInfoForBookDto = publisherInfoForBookDto;
     }
 
     public Genre getGenre() {

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BookService {
 
-    Book save(Book book) throws BookAlreadyExistsException;
+    void save(Book book) throws BookAlreadyExistsException;
 
     List<Book> findAll();
 

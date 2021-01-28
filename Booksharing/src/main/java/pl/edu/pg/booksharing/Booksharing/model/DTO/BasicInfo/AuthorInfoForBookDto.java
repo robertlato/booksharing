@@ -2,21 +2,22 @@ package pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo;
 
 public class AuthorInfoForBookDto {
 
-    private Long id;
-
     private String firstName;
 
-    private String secondName;
 
     private String lastName;
 
-    public Long getId() {
-        return id;
+
+
+    public AuthorInfoForBookDto(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public AuthorInfoForBookDto() {
     }
+
+
 
     public String getFirstName() {
         return firstName;
@@ -24,14 +25,6 @@ public class AuthorInfoForBookDto {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
     }
 
     public String getLastName() {

@@ -7,4 +7,5 @@ import pl.edu.pg.booksharing.Booksharing.model.Author;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     Author findByLastName(String lastName);
+    Author findByFirstNameAndLastName(String firstName, String lastName);
 }

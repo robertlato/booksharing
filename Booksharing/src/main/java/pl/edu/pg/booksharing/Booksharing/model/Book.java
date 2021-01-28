@@ -22,10 +22,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
+    private boolean isBorrowed;
+
 //    @DateTimeFormat
     private java.sql.Date releaseDate;
-
-
 
     @NotBlank
     private String title;
@@ -36,9 +37,18 @@ public class Book {
 
 
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "SharePointID")
+    private SharePoint sharePoint;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     @JsonIgnore
-    private List<BookCopy> bookCopies = new ArrayList<>();
+    private List<Borrowing> borrowings = new ArrayList<>();
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+//    @JsonIgnore
+//    private List<BookCopy> bookCopies = new ArrayList<>();
 
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
@@ -69,13 +79,15 @@ public class Book {
     }
 
     public Book(Date releaseDate, String title, @Size(min = 13, max = 13) String isbn, Publisher publisher,
-                List<Author> authors, Genre genre) {
+                List<Author> authors, Genre genre, SharePoint sharePoint) {
+        this.isBorrowed = false;
         this.releaseDate = releaseDate;
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
         this.authors = authors;
         this.genre = genre;
+        this.sharePoint = sharePoint;
     }
 
 
@@ -112,13 +124,13 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public List<BookCopy> getBookCopies() {
-        return bookCopies;
-    }
-
-    public void setBookCopies(List<BookCopy> bookCopies) {
-        this.bookCopies = bookCopies;
-    }
+//    public List<BookCopy> getBookCopies() {
+//        return bookCopies;
+//    }
+//
+//    public void setBookCopies(List<BookCopy> bookCopies) {
+//        this.bookCopies = bookCopies;
+//    }
 
     public Publisher getPublisher() {
         return publisher;

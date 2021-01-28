@@ -33,12 +33,12 @@ public class BookController {
 
     // add new book
     @PostMapping(path = "/api/book")
-    public BookBasicInfoDto addBookDto(@Valid @RequestBody BookBasicInfoDto bookBasicInfoDto) throws BookAlreadyExistsException {
+    public void addBookDto(@Valid @RequestBody BookBasicInfoDto bookBasicInfoDto) throws BookAlreadyExistsException {
         Book book = bookService.convertToEntity(bookBasicInfoDto);
-        Book bookAdded = bookService.save(book);
-        return bookService.convertToDto(bookAdded);
+        bookService.save(book);
+//        Book bookAdded = bookService.save(book);
+//        return bookService.convertToDto(bookAdded);
     }
-
 
     // get all books
    @GetMapping(path = "api/books")
@@ -54,7 +54,6 @@ public class BookController {
         return bookService.findAll();
     }*/
 
-    // get book by id
     @GetMapping(path = "/api/book/{id}")
     public BookBasicInfoDto getBookByID(@PathVariable long id) throws ResourceNotFoundException {
         return bookService.convertToDto(bookService.findById(id));

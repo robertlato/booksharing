@@ -33,7 +33,7 @@ public class SharePoint {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sharePoint")
 //    @JsonIgnore
-    private List<BookCopy> bookCopies = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sharePoint")
     @JsonIgnore
@@ -41,6 +41,13 @@ public class SharePoint {
 
 
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public SharePoint() {
     }
@@ -49,8 +56,6 @@ public class SharePoint {
         this.user = user;
         this.address = address;
     }
-
-
 
 
     public Long getId() {
@@ -77,13 +82,6 @@ public class SharePoint {
         this.address = address;
     }
 
-    public List<BookCopy> getBookCopies() {
-        return bookCopies;
-    }
-
-    public void setBookCopies(List<BookCopy> bookCopies) {
-        this.bookCopies = bookCopies;
-    }
 
     public List<Borrowing> getBorrowings() {
         return borrowings;

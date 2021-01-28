@@ -5,34 +5,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
-import pl.edu.pg.booksharing.Booksharing.model.Book;
+import pl.edu.pg.booksharing.Booksharing.model.*;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.AuthorInfoForBookDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.repository.AuthorRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
+import pl.edu.pg.booksharing.Booksharing.repository.PublisherRepository;
+import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     private BookRepository bookRepository;
-
+    private UserRepository userRepository;
+    private PublisherRepository publisherRepository;
+    private AuthorRepository authorRepository;
     @Autowired
     ModelMapper modelMapper;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, UserRepository userRepository, PublisherRepository publisherRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
+        this.publisherRepository = publisherRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
-    public Book save(Book book) throws BookAlreadyExistsException /*throws BookAlreadyExistsException*/ {
+    public void save(Book book) throws BookAlreadyExistsException /*throws BookAlreadyExistsException*/ {
         if (bookRepository.findByIsbn(book.getIsbn()) != null) {
             throw new BookAlreadyExistsException("Book with ISBN: " + book.getIsbn() + " already exists");
         } else {
         bookRepository.save(book);
         }
-        return book;
     }
 
 
@@ -64,8 +73,38 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book convertToEntity(BookBasicInfoDto bookBasicInfoDto) {
-        Book book = modelMapper.map(bookBasicInfoDto, Book.class);
+//        Book book = modelMapper.map(bookBasicInfoDto, Book.class);
+        User user = userRepository.findByEmail(bookBasicInfoDto.getSharePointOwnerEmail());
+        Publisher publisher = publisherRepository.findByName(bookBasicInfoDto.getPublisher().getName());
 
+
+        if (publisher == null) {
+            publisher = new Publisher();
+            publisher.setName(bookBasicInfoDto.getPublisher().getName());
+            publisher.setAddress(new Address());
+        }
+
+        List<Author> authors = new ArrayList<>();
+        for (AuthorInfoForBookDto myAuthor : bookBasicInfoDto.getAuthors()) {
+            Author author = authorRepository.findByFirstNameAndLastName(myAuthor.getFirstName(), myAuthor.getLastName());
+            if (author == null) {
+                author = new Author();
+                author.setFirstName(myAuthor.getFirstName());
+                author.setLastName(myAuthor.getLastName());
+            }
+            authors.add(author);
+        }
+
+
+        Book book = new Book(
+                bookBasicInfoDto.getReleaseDate(),
+                bookBasicInfoDto.getTitle(),
+                bookBasicInfoDto.getIsbn(),
+                publisher,
+                authors,
+                bookBasicInfoDto.getGenre(),
+                user.getSharePoints().get(0)
+        );
         return book;
     }
 

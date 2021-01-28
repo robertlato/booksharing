@@ -31,8 +31,8 @@ public class Borrowing {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "BookCopyID")
-    private BookCopy bookCopy;
+    @JoinColumn(name = "BookID")
+    private Book book;
 
     @NotNull
     @ManyToOne
@@ -49,10 +49,10 @@ public class Borrowing {
     public Borrowing() {
     }
 
-    public Borrowing(Timestamp checkOutDate, Timestamp checkInDate, BookCopy bookCopy, SharePoint sharePoint, User user) {
+    public Borrowing(Timestamp checkOutDate, Timestamp checkInDate, Book book, SharePoint sharePoint, User user) {
         this.checkOutDate = checkOutDate;
         this.checkInDate = checkInDate;
-        this.bookCopy = bookCopy;
+        this.book = book;
         this.sharePoint = sharePoint;
         this.user = user;
     }
@@ -84,12 +84,12 @@ public class Borrowing {
         this.checkInDate = checkInDate;
     }
 
-    public BookCopy getBookCopy() {
-        return bookCopy;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookCopy(BookCopy bookCopy) {
-        this.bookCopy = bookCopy;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public SharePoint getSharePoint() {
