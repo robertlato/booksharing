@@ -54,6 +54,7 @@ public class BookController {
         return bookService.findAll();
     }*/
 
+    // get book by id
     @GetMapping(path = "/api/book/{id}")
     public BookBasicInfoDto getBookByID(@PathVariable long id) throws ResourceNotFoundException {
         return bookService.convertToDto(bookService.findById(id));

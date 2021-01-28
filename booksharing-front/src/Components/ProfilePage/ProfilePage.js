@@ -1,6 +1,5 @@
 import React from "react";
 import "./ProfilePage.css";
-import { BrowserRouter as Switch, Router } from "react-router-dom";
 import AuthenticatedRoute from "../../Components/Authenticate/AuthenticatedRoute";
 import ProfileNavbar from "./ProfileNavbar";
 import SearchBook from "./ProfilePageComponents/SearchBook/SearchBook";
@@ -21,13 +20,9 @@ class ProfilePage extends React.Component {
                 <AuthenticatedRoute
                     path="/mylibrary"
                     exact
-                    component={AddBook}
-                />
-                <AuthenticatedRoute
-                    path="/addbook"
-                    exact
                     component={MyLibrary}
                 />
+                <AuthenticatedRoute path="/addbook" exact component={AddBook} />
                 <AuthenticatedRoute
                     path="/profilesettings"
                     exact
