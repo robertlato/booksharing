@@ -11,6 +11,8 @@ public class BookSearchDto {
 
     private String title;
 
+    private String isbn;
+
     private PublisherSearchDto publisher;
 
     private List<AuthorSearchDto> authors = new ArrayList<>();
@@ -22,11 +24,12 @@ public class BookSearchDto {
     }
 
     public BookSearchDto(String title, PublisherSearchDto publisher,
-                         List<AuthorSearchDto> authors, SharePointSearchDto sharePoint) {
+                         List<AuthorSearchDto> authors, SharePointSearchDto sharePoint, String isbn) {
         this.title = title;
         this.publisher = publisher;
         this.authors = authors;
         this.sharePoint = sharePoint;
+        this.isbn = isbn;
     }
 
 
@@ -56,10 +59,18 @@ public class BookSearchDto {
     }
 
     public SharePointSearchDto getSharePoint() {
-        return sharePoint; // TODO ZROBIC ZEBY DZIALALO BO SMERGLA DOSTAJE
+        return sharePoint;
     }
 
     public void setSharePoint(SharePointSearchDto sharePoint) {
         this.sharePoint = sharePoint;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }
