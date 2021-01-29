@@ -8,6 +8,8 @@ import java.util.List;
 
 public class BookSharepointDto {
 
+    private Long id;
+
     private String title;
 
     private List<AuthorSharepointDto> authors = new ArrayList<>();
@@ -23,14 +25,23 @@ public class BookSharepointDto {
     public BookSharepointDto() {
     }
 
-    public BookSharepointDto(String title, List<AuthorSharepointDto> authors, PublisherSharepointDto publisher,
+    public BookSharepointDto(Long id, String title, List<AuthorSharepointDto> authors, PublisherSharepointDto publisher,
                              String isbn, Date releaseDate, boolean isBorrowed) {
+        this.id = id;
         this.title = title;
         this.authors = authors;
         this.publisher = publisher;
         this.isbn = isbn;
         this.releaseDate = releaseDate;
         this.isBorrowed = isBorrowed;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
