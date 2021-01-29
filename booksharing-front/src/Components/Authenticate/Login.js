@@ -34,16 +34,12 @@ class Login extends React.Component {
                     this.state.username,
                     this.state.password
                 );
-                console.log("dobre pasy");
+                console.log("dobre dane");
             })
             .then(() => this.setState({ isLogged: true }))
             .then(() => window.location.reload())
             .catch(() => {
-                console.log(this.state.username);
-                console.log(this.state.password);
-                console.log("złe pasy");
-                // this.setState({ showSuccessMessage: false });
-                // this.setState({ hasLoginFailed: true });
+                console.log("złe dane");
             });
     }
 

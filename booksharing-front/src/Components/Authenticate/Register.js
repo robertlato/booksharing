@@ -38,10 +38,10 @@ class Register extends React.Component {
                 phoneNumber: this.state.phonenumber,
             })
             .then((res) => {
-                console.log("udało się zarejestrować");
-                console.log(res);
-                console.log(res.data);
-                this.setState({ isRegistered: true });
+                if (res.status === 200) {
+                    console.log("udało się zarejestrować");
+                    this.setState({ isRegistered: true });
+                }
             })
             .catch((error) => {
                 console.log("nie przeszła rejestracja");
