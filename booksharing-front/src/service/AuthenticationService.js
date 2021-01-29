@@ -19,6 +19,10 @@ class AuthenticationService {
 
     registerSuccessfulLogin(username, password) {
         sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
+        localStorage.setItem(
+            "userToken",
+            window.btoa(username + ":" + password)
+        );
         this.setupAxiosInterceptors(
             this.createBasicAuthToken(username, password)
         );
@@ -26,6 +30,7 @@ class AuthenticationService {
 
     logout() {
         sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+        localStorage.removeItem("userToken");
     }
 
     isUserLoggedIn() {

@@ -2,35 +2,21 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import "./AddBook.css";
+import AuthenticationService from "../../../../service/AuthenticationService";
 
 class AddBook extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            sharePointOwnerEmail: AuthenticationService.getLoggedInUserName(),
             title: "",
             releasedate: "",
             isbn: "",
-            publisher: {
-                name: "",
-                address: {
-                    country: "",
-                    city: "",
-                    postalcode: "",
-                    street: "",
-                    housenumber: "",
-                },
-            },
-            authors: [
-                {
-                    firstname: "",
-                    lastname: "",
-                    secondname: "",
-                },
-            ],
-            genre: {
-                name: "",
-            },
+            publishername: "",
+            authorsfirstname: "",
+            authorslastname: "",
+            genrename: "",
         };
 
         this.onChange = this.onChange.bind(this);
@@ -45,38 +31,39 @@ class AddBook extends React.Component {
     async onSubmit(event) {
         event.preventDefault();
 
-        console.log(this.state);
-
         axios
-            .post("http://localhost:8889/api/book", {
-                releaseDate: this.state.releasedate,
-                title: this.state.title,
-                isbn: this.state.isbn,
-                publisher: {
-                    name: this.state.publisher.name,
-                    address: this.state.publisher.address,
-                    // {
-                    //     country: this.state.publisher.address.country,
-                    //     city: this.state.publisher.address.city,
-                    //     postalCode: this.state.publisher.address.postalnode,
-                    //     street: this.state.publisher.address.street,
-                    //     houseNumber: this.state.publisher.address.housenumber,
-
-                    // },
+            .post(
+                "http://localhost:8889/api/book",
+                {
+                    releaseDate: this.state.releasedate,
+                    title: this.state.title,
+                    isbn: this.state.isbn,
+                    publisher: {
+                        name: this.state.publishername,
+                    },
+                    authors: [
+                        {
+                            firstName: this.state.authorsfirstname,
+                            lastName: this.state.authorslastname,
+                        },
+                    ],
+                    genre: {
+                        name: this.state.genrename,
+                    },
+                    sharePointOwnerEmail: this.state.sharePointOwnerEmail,
                 },
-                authors: {
-                    firstName: this.state.authors.firstname,
-                    lastName: this.state.authors.lastname,
-                    secondName: this.state.authors.secondname,
-                },
-
-                genre: {
-                    name: this.state.genre.name,
-                },
-            })
+                {
+                    headers: {
+                        authorization:
+                            "Basic " + localStorage.getItem("userToken"),
+                    },
+                }
+            )
             .then((res) => {
-                console.log("książka dodana");
-                console.log(res);
+                if (res.status === 200) {
+                    window.alert("Dodano książkę!");
+                    document.getElementById("book-form").reset();
+                }
             })
             .catch((error) => {
                 console.log("nie dodało książki");
@@ -88,7 +75,7 @@ class AddBook extends React.Component {
         return (
             <div>
                 <h1>Dodaj książkę</h1>
-                <form>
+                <form id="book-form">
                     <label>
                         <p>Tytuł</p>
                         <input
@@ -123,38 +110,8 @@ class AddBook extends React.Component {
                         <p>Wydawnictwo</p>
                         <input
                             type="text"
-                            name="publisher.name"
+                            name="publishername"
                             placeholder="Nazwa"
-                            onChange={this.onChange}
-                        />
-                        <input
-                            type="text"
-                            name="publisher.adrress.country"
-                            placeholder="Kraj"
-                            onChange={this.onChange}
-                        />
-                        <input
-                            type="text"
-                            name="publisher.adrresscity"
-                            placeholder="Miasto"
-                            onChange={this.onChange}
-                        />
-                        <input
-                            type="text"
-                            name="publisher.adrress.postalcode"
-                            placeholder="Kod pocztowy"
-                            onChange={this.onChange}
-                        />
-                        <input
-                            type="text"
-                            name="publisher.adrress.street"
-                            placeholder="Ulica"
-                            onChange={this.onChange}
-                        />
-                        <input
-                            type="text"
-                            name="publisher.adrress.housenumber"
-                            placeholder="Numer budynku/mieszkania"
                             onChange={this.onChange}
                         />
                     </label>
@@ -162,19 +119,13 @@ class AddBook extends React.Component {
                         <p>Autor</p>
                         <input
                             type="text"
-                            name="firstname"
+                            name="authorsfirstname"
                             placeholder="Imię"
                             onChange={this.onChange}
                         />
                         <input
                             type="text"
-                            name="secondname"
-                            placeholder="Drugie imię"
-                            onChange={this.onChange}
-                        />
-                        <input
-                            type="text"
-                            name="lastname"
+                            name="authorslastname"
                             placeholder="Nazwisko"
                             onChange={this.onChange}
                         />
