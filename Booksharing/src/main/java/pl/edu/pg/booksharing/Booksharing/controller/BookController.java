@@ -16,6 +16,7 @@ import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepoin
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,6 +91,12 @@ public class BookController {
         List<BookSearchDto> bookSearchDtos = books.stream().map(book -> bookService.convertSearchToDto(book)).collect(Collectors.toList());
 
         return new ResponseEntity<>(bookSearchDtos, HttpStatus.OK);
+    }
+
+    @Transactional
+    @DeleteMapping(path = "/api/book/{id}")
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteBookById(id);
     }
 
 }

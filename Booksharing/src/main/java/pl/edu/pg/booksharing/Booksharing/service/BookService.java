@@ -21,6 +21,10 @@ public interface BookService {
     List<Book> findByOwnerEmail(String email) throws ResourceNotFoundException;
 
     BookBasicInfoDto convertToDto(Book book);
+
     BookSearchDto convertSearchToDto(Book book);
+
     Book convertToEntity(BookBasicInfoDto bookBasicInfoDto);
+
+    void deleteBookById(long id);
 }

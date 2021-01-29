@@ -51,16 +51,16 @@ public class Book {
 //    private List<BookCopy> bookCopies = new ArrayList<>();
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "PublisherID")
     private Publisher publisher;
 
     @NotNull
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Author> authors = new ArrayList<>();
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "GenreID")
     private Genre genre;
 

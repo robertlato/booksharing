@@ -32,7 +32,7 @@ public class Publisher {
     @JoinColumn(name = "AddressID", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(mappedBy = "publisher", cascade ={ CascadeType.PERSIST, CascadeType.MERGE})
 //    @JsonIgnore
     private List<Book> books = new ArrayList<>();
 

@@ -12,6 +12,7 @@ import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
 import pl.edu.pg.booksharing.Booksharing.repository.*;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,4 +137,11 @@ public class BookServiceImpl implements BookService {
 
         return bookSearchDto;
     }
+
+    @Transactional
+    @Override
+    public void deleteBookById(long id) {
+        bookRepository.deleteById(id);
+    }
+
 }
