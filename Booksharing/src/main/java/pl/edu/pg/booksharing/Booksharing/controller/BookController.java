@@ -9,15 +9,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
+import pl.edu.pg.booksharing.Booksharing.model.Author;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepointDto;
+import pl.edu.pg.booksharing.Booksharing.repository.AuthorRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +41,9 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Autowired
+    AuthorRepository authorRepository;
 
     public BookController() {
     }
@@ -78,6 +84,7 @@ public class BookController {
         return bookService.convertToDto(bookService.findByIsbn(isbn));
     }
 
+    // get books by owner email
     @GetMapping(path = "/api/sharepoint/books/{email}")
     public List<BookSharepointDto> getBooksFromSharepoint(@PathVariable String email) throws ResourceNotFoundException {
       List<Book> books = bookService.findByOwnerEmail(email);
@@ -85,9 +92,29 @@ public class BookController {
         return books.stream().map(book -> modelMapper.map(book, BookSharepointDto.class)).collect(Collectors.toList());
     }
 
+    // search engine for books
     @GetMapping(path = "/api")
     public ResponseEntity<List<BookSearchDto>> searchForBooks(@SearchSpec Specification<Book> specs) {
         List<Book> books = bookRepository.findAll(Specification.where(specs));
+
+        List<BookSearchDto> bookSearchDtos = books.stream().map(book -> bookService.convertSearchToDto(book)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(bookSearchDtos, HttpStatus.OK);
+    }
+
+    // search engine for books
+    @GetMapping(path = "/api/books/authors")
+    public ResponseEntity<List<BookSearchDto>> searchForBooksByAuthors(@SearchSpec Specification<Author> specs) {
+        List<Author> authors = authorRepository.findAll(Specification.where(specs));
+        List<Book> books = new ArrayList<>();
+        for (Author author:
+             authors) {
+            List<Book> booksAuthor = author.getBooks();
+            for (Book bookList:
+                 booksAuthor) {
+                books.add(bookList);
+            }
+        }
 
         List<BookSearchDto> bookSearchDtos = books.stream().map(book -> bookService.convertSearchToDto(book)).collect(Collectors.toList());
 
