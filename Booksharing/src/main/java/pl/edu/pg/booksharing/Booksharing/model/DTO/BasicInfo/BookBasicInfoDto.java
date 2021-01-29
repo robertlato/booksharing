@@ -18,9 +18,10 @@ public class BookBasicInfoDto {
 
     private PublisherInfoForBookDto publisher;
 
+    // TODO add dto for genre
     private Genre genre;
 
-    private String sharePointOwnerEmail;
+    private SharePointEmailDto sharePoint;
 
     private java.sql.Date releaseDate;
 
@@ -29,13 +30,13 @@ public class BookBasicInfoDto {
     }
 
     public BookBasicInfoDto(String title, String isbn, List<AuthorInfoForBookDto> authors,
-                            PublisherInfoForBookDto publisher, Genre genre, String sharePointOwnerEmail, Date releaseDate) {
+                            PublisherInfoForBookDto publisher, Genre genre, SharePointEmailDto sharePoint, Date releaseDate) {
         this.title = title;
         this.isbn = isbn;
         this.authors = authors;
         this.publisher = publisher;
         this.genre = genre;
-        this.sharePointOwnerEmail = sharePointOwnerEmail;
+        this.sharePoint = sharePoint;
         this.releaseDate = releaseDate;
     }
 
@@ -56,12 +57,12 @@ public class BookBasicInfoDto {
         this.publisher = publisher;
     }
 
-    public String getSharePointOwnerEmail() {
-        return sharePointOwnerEmail;
+    public SharePointEmailDto getSharePoint() {
+        return sharePoint;
     }
 
-    public void setSharePointOwnerEmail(String sharePointOwnerEmail) {
-        this.sharePointOwnerEmail = sharePointOwnerEmail;
+    public void setSharePoint(SharePointEmailDto sharePoint) {
+        this.sharePoint = sharePoint;
     }
 
     public String getTitle() {

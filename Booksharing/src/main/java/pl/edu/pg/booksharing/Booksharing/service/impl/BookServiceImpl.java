@@ -90,7 +90,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book convertToEntity(BookBasicInfoDto bookBasicInfoDto) {
 //        Book book = modelMapper.map(bookBasicInfoDto, Book.class);
-        User user = userRepository.findByEmail(bookBasicInfoDto.getSharePointOwnerEmail());
+        User user = userRepository.findByEmail(bookBasicInfoDto.getSharePoint().getUser().getEmail());
         Publisher publisher = publisherRepository.findByName(bookBasicInfoDto.getPublisher().getName());
 
 

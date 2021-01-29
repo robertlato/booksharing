@@ -53,17 +53,18 @@ public class BookController {
 
     // get all books
    @GetMapping(path = "api/books")
-    public List<BookBasicInfoDto> getAllBooks(){
+   public List<BookBasicInfoDto> getAllBooks(){
         List<Book> books = bookService.findAll();
 
         return books.stream().map(book -> modelMapper.map(book, BookBasicInfoDto.class)).collect(Collectors.toList());
     }
 
-    // get all books
- /*   @GetMapping(path = "api/books")
-    public List<Book> getAllBooks(){
-        return bookService.findAll();
-    }*/
+//    // get all books
+//    @GetMapping(path = "api/books")
+//    public List<Book> getAllBooks(){
+//        List<Book> books = bookService.findAll();
+//        return books;
+//    }
 
     // get book by id
     @GetMapping(path = "/api/book/{id}")

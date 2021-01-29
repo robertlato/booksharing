@@ -179,4 +179,28 @@ public class Book {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
+
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
+    }
+
+    public SharePoint getSharePoint() {
+        return sharePoint;
+    }
+
+    public void setSharePoint(SharePoint sharePoint) {
+        this.sharePoint = sharePoint;
+    }
+
+    public List<Borrowing> getBorrowings() {
+        return borrowings;
+    }
+
+    public void setBorrowings(List<Borrowing> borrowings) {
+        this.borrowings = borrowings;
+    }
 }

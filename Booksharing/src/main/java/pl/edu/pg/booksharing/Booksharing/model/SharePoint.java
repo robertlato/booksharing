@@ -41,15 +41,12 @@ public class SharePoint {
 
 
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
     public SharePoint() {
+    }
+
+    public SharePoint(@NotNull Address address) {
+        this.address = address;
     }
 
     public SharePoint(User user, Address address) {
@@ -57,6 +54,16 @@ public class SharePoint {
         this.address = address;
     }
 
+
+
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public Long getId() {
         return id;
