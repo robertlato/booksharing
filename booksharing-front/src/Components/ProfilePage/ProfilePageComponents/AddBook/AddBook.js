@@ -49,7 +49,11 @@ class AddBook extends React.Component {
                     genre: {
                         name: this.state.genrename,
                     },
-                    sharePointOwnerEmail: this.state.sharePointOwnerEmail,
+                    sharePoint: {
+                        user: {
+                            email: this.state.sharePointOwnerEmail,
+                        },
+                    },
                 },
                 {
                     headers: {
