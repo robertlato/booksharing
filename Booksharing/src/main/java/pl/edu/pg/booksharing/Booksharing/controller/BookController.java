@@ -1,13 +1,19 @@
 package pl.edu.pg.booksharing.Booksharing.controller;
 
+import com.sipios.springsearch.anotation.SearchSpec;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepointDto;
+import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import javax.validation.Valid;
@@ -28,6 +34,9 @@ public class BookController {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    BookRepository bookRepository;
 
     public BookController() {
     }
@@ -72,6 +81,15 @@ public class BookController {
       List<Book> books = bookService.findByOwnerEmail(email);
 
         return books.stream().map(book -> modelMapper.map(book, BookSharepointDto.class)).collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/api")
+    public ResponseEntity<List<BookSearchDto>> searchForBooks(@SearchSpec Specification<Book> specs) {
+        List<Book> books = bookRepository.findAll(Specification.where(specs));
+
+        List<BookSearchDto> bookSearchDtos = books.stream().map(book -> bookService.convertSearchToDto(book)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(bookSearchDtos, HttpStatus.OK);
     }
 
 }
