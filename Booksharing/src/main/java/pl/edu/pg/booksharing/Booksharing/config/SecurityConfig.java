@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/sharepoints").permitAll()
                 .antMatchers("/h2**/**").permitAll()
+                .antMatchers("/api**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/{id}").permitAll()
                 .anyRequest().authenticated()
                 .and()
