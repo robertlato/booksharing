@@ -20,7 +20,7 @@ public class Borrowing {
     private Long id;
 
     // borrow the book
-    @NotBlank
+    //@NotBlank
     private java.sql.Timestamp checkOutDate;
 
     // return of the book

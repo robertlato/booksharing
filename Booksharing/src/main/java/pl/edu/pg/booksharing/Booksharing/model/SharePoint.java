@@ -54,8 +54,13 @@ public class SharePoint {
         this.address = address;
     }
 
-
-
+    public SharePoint(Long id, @NotNull User user, @NotNull Address address, List<Book> books, List<Borrowing> borrowings) {
+        this.id = id;
+        this.user = user;
+        this.address = address;
+        this.books = books;
+        this.borrowings = borrowings;
+    }
 
     public List<Book> getBooks() {
         return books;
