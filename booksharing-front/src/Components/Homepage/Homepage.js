@@ -18,6 +18,7 @@ class Homepage extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onClickSearch = this.onClickSearch.bind(this);
         this.datalistSwitch = this.dataListSwitch.bind(this);
+        this.apiUrlSwitch = this.apiUrlSwitch.bind(this);
     }
 
     dataListSwitch(value) {
@@ -27,13 +28,24 @@ class Homepage extends React.Component {
             case "2":
                 return "lastName";
             case "3":
-                return "publisher";
+                return "publisher.name";
             case "4":
                 return "isbn";
-            // case "5":
-            //     return "publish-data";
+            case "5":
+                return "sharePoint.address.city";
             default:
                 return "empty";
+        }
+    }
+
+    apiUrlSwitch(searchBy) {
+        switch (searchBy) {
+            case "lastName":
+                return "http://localhost:8889/api/books/authors?search=";
+            case "sharePoint.address.city":
+                return "http://localhost:8889/api?search=";
+            default:
+                return "http://localhost:8889/api?search=";
         }
     }
 
@@ -48,10 +60,9 @@ class Homepage extends React.Component {
 
         const SEARCH_BY = this.dataListSwitch(this.state.searchBy);
         const WANTED_ITEM = this.state.wantedItem;
-        const BASE_URL = "http://localhost:8889/api?search=";
+        const BASE_URL = this.apiUrlSwitch(SEARCH_BY);
         const EXPANDED_URL = BASE_URL + SEARCH_BY + ":*" + WANTED_ITEM + "*";
 
-        // console.log("link: " + EXPANDED_URL);
         axios
             .get(EXPANDED_URL)
 
@@ -90,6 +101,7 @@ class Homepage extends React.Component {
                             { text: "Autor", value: "2" },
                             { text: "Wydawnictwo", value: "3" },
                             { text: "ISBN", value: "4" },
+                            { text: "Miasto", value: "5" },
                         ]}
                     />
                     <input
