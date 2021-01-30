@@ -36,7 +36,6 @@ geocode();
 
 function geocode(){
     const location = 'Zielony Trójkąt 4 80-869 Gdańsk';
-    //const location = `${API_URL}/sharepoint`;
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: location,
