@@ -11,12 +11,32 @@ const mapStyles = {
   width: '60%',
   height: '60%'
 };
+
+
+function getSharepointsData(){
+  axios.get(`${API_URL}/api/sharepoints`)
+  .then(function(response){
+    console.log(response);
+      console.log(response.data[0].address.street);
+      console.log(response.data[0].address.houseNumber);
+      console.log(response.data[0].address.postalCode);
+      console.log(response.data[0].address.city);
+      console.log(response.data[0].address.country);
+  })
+  .catch(function(error){
+    console.log(error);
+  })
+}
+getSharepointsData();
+
 var formattedAddress;
+var latAddress;
+var lngAddress;
 geocode();
 
 function geocode(){
     const location = 'Zielony Trójkąt 4 80-869 Gdańsk';
-    //const location = `${API_URL}/sharepoint/address`;
+    //const location = `${API_URL}/sharepoint`;
     axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: location,
@@ -26,8 +46,8 @@ function geocode(){
         console.log(response);
 
         formattedAddress = response.data.results[0].formatted_address;
-        var latAddress = response.data.results[0].geometry.location.lat;
-        var lngAddress = response.data.results[0].geometry.location.lng;
+        latAddress = response.data.results[0].geometry.location.lat;
+        lngAddress = response.data.results[0].geometry.location.lng;
 
         console.log(formattedAddress);
         console.log(latAddress);
@@ -76,9 +96,15 @@ export class MyMap extends Component {
       > 
        <Marker
           onClick={this.onMarkerClick}
-          position={{ lat: 54.3780294, lng: 18.6290507 }} // tutaj dac z bazy adresy
+          position={{lat: 54.3780294,lng: 18.6290507}} // tutaj dac z bazy adresy
           name={formattedAddress} // dac z bazy nazwe w dymku
         />
+         <Marker
+          onClick={this.onMarkerClick}
+          position={{lat: 54.38435,lng: 18.6293214}} // tutaj dac z bazy adresy
+          name={formattedAddress} // dac z bazy nazwe w dymku
+        />
+        
         <InfoWindow
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}
