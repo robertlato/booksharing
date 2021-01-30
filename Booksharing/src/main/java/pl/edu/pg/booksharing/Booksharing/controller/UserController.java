@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
+import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.service.UserService;
 
@@ -36,5 +37,9 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
+    @PatchMapping(path = "/api/user/{ownerEmail}")
+    public void updateUser(@PathVariable String ownerEmail, @RequestBody User user) {
+        userService.update(ownerEmail, user);
+    }
 }
 

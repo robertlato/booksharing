@@ -15,5 +15,7 @@ public interface UserService {
     User findById(long id) throws ResourceNotFoundException;
 
     UserSharepointDto convertToDto(User user);
+
+    void update(String ownerEmail, User user);
 }
 
