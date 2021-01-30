@@ -2,6 +2,7 @@ package pl.edu.pg.booksharing.Booksharing.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
 
@@ -30,9 +31,8 @@ public class SharePointController {
 
     // update address of the sharepoint
     // user remains unchanged
-    @PutMapping(path = "/api/sharepoint/{id}")
-    public void updateSharepoint(@PathVariable long id, @RequestBody SharePoint sharePoint) {
-        sharePointService.save(sharePoint);
+    @PatchMapping(path = "/api/sharepoint/{ownerEmail}")
+    public void updateSharepoint(@PathVariable String ownerEmail, @RequestBody Address address) {
+        sharePointService.update(ownerEmail, address);
     }
-
 }
