@@ -27,7 +27,11 @@ public class BorrowingDto {
         this.user = user;
     }
 
+
+    //TODO NAPRAWIC USTAWIANIE W GECIE
     public Timestamp getCheckOutDate() {
+        this.checkOutDate = new Timestamp(System.currentTimeMillis());
+
         return checkOutDate;
     }
 
@@ -36,6 +40,12 @@ public class BorrowingDto {
     }
 
     public Timestamp getCheckInDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, 1);
+        Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
+        this.checkInDate = timestamp;
+
         return checkInDate;
     }
 
