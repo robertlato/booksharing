@@ -17,4 +17,6 @@ public interface SharePointService {
     void update(String email, Address address);
 
     SharepointInfoDto convertToDto(SharePoint sharePoint);
+
+    SharePoint findByEmail(String email);
 }

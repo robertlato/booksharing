@@ -57,6 +57,13 @@ public class SharePointServiceImpl implements SharePointService {
     }
 
     @Override
+    public SharePoint findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+
+        return sharePointRepository.findById((long) user.getSharePoints().get(0).getId());
+    }
+
+    @Override
     public void update(String email, Address address) {
         Authentication authentication = authenticationFacade.getAuthentication();
         String userEmail = authentication.getName();

@@ -35,4 +35,9 @@ public class SharePointController {
     public void updateSharepoint(@PathVariable String ownerEmail, @RequestBody Address address) {
         sharePointService.update(ownerEmail, address);
     }
+
+    @GetMapping(path = "/api/sharepoint/email/{ownerEmail}")
+    public SharePoint getSharePointByEmail(@PathVariable String ownerEmail) {
+        return sharePointService.findByEmail(ownerEmail);
+    }
 }

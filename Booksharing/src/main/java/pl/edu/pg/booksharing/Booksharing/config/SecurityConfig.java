@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/sharepoints").permitAll()
+                .antMatchers("/api/sharepoint/email/**").permitAll()
                 .antMatchers("/h2**/**").permitAll()
                 .antMatchers("/api**").permitAll()
                 .antMatchers("/api/books/authors**").permitAll()
