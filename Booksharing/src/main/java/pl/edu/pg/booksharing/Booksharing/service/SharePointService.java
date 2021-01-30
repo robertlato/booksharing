@@ -1,5 +1,6 @@
 package pl.edu.pg.booksharing.Booksharing.service;
 
+import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.SharepointInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 
@@ -13,7 +14,7 @@ public interface SharePointService {
 
     SharePoint findById(long id);
 
-    void update(SharePoint sharePoint);
+    void update(String email, Address address);
 
     SharepointInfoDto convertToDto(SharePoint sharePoint);
 }
