@@ -39,12 +39,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(Book book) throws BookAlreadyExistsException /*throws BookAlreadyExistsException*/ {
-        if (bookRepository.findByIsbn(book.getIsbn()) != null) {
-            throw new BookAlreadyExistsException("Book with ISBN: " + book.getIsbn() + " already exists");
-        } else {
+    public void save(Book book){
         bookRepository.save(book);
-        }
     }
 
 
