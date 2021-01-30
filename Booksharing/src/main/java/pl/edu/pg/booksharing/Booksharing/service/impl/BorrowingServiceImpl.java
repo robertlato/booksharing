@@ -8,6 +8,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.Borrowing;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingReturnDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
@@ -17,6 +18,8 @@ import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 import pl.edu.pg.booksharing.Booksharing.service.BorrowingService;
 import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
+
+import java.sql.Timestamp;
 
 
 @Service
@@ -69,5 +72,29 @@ public class BorrowingServiceImpl implements BorrowingService {
         );
 
         return borrowing;
+    }
+
+    @Override
+    public Borrowing findById(long id) {
+        Borrowing borrowing = borrowingRepository.findById(id);
+        return borrowing;
+    }
+
+    @Override
+    public Borrowing convertToEntityReturn(BorrowingReturnDto borrowingReturnDto) throws ResourceNotFoundException {
+        long borrowingId = borrowingReturnDto.getId();
+        Borrowing borrowing = borrowingRepository.findById(borrowingId);
+
+
+        return borrowing;
+    }
+
+    @Override
+    public void returnBook(Borrowing borrowing) throws ResourceNotFoundException {
+        Book book = bookService.findById(borrowing.getBook().getId());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        borrowing.setCheckInDate(timestamp);
+        book.setBorrowed(false);
+
     }
 }

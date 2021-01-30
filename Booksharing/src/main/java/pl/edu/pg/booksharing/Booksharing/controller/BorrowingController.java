@@ -9,6 +9,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.BorrowedAlreadyException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Borrowing;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingReturnDto;
 import pl.edu.pg.booksharing.Booksharing.service.BorrowingService;
 
 import javax.validation.Valid;
@@ -28,5 +29,11 @@ public class BorrowingController {
     public void addBorrowing(@Valid @RequestBody BorrowingDto borrowingDto) throws ResourceNotFoundException, BorrowedAlreadyException {
         Borrowing borrowing = borrowingService.convertToEntity(borrowingDto);
         borrowingService.borrow(borrowing);
+    }
+
+    @PostMapping(path = "/api/borrowing/return")
+    public void returnBookBorrowing(@Valid @RequestBody BorrowingReturnDto borrowingReturnDto) throws ResourceNotFoundException {
+        Borrowing borrowing = borrowingService.convertToEntityReturn(borrowingReturnDto);
+        borrowingService.returnBook(borrowing);
     }
 }
