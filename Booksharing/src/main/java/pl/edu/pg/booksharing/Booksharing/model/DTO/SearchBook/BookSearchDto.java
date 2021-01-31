@@ -9,6 +9,8 @@ import java.util.List;
 
 public class BookSearchDto {
 
+    private Long id;
+
     private String title;
 
     private String isbn;
@@ -18,6 +20,8 @@ public class BookSearchDto {
     private List<AuthorSearchDto> authors = new ArrayList<>();
 
     private SharePointSearchDto sharePoint;
+
+    private boolean isBorrowed;
 
 
     public BookSearchDto() {
@@ -33,6 +37,13 @@ public class BookSearchDto {
     }
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -72,5 +83,13 @@ public class BookSearchDto {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
     }
 }
