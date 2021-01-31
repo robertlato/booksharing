@@ -7,11 +7,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Author;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo.BookDetailedInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepointDto;
 import pl.edu.pg.booksharing.Booksharing.repository.AuthorRepository;
@@ -28,24 +28,21 @@ import java.util.stream.Collectors;
 @RestController
 public class BookController {
 
-    //    private BookService bookService;
-//
-//    @Autowired
-//    public BookController(BookService bookService) { this.bookService = bookService; }
-
-    @Autowired
     BookService bookService;
-
-    @Autowired
     ModelMapper modelMapper;
-
-    @Autowired
     BookRepository bookRepository;
-
-    @Autowired
     AuthorRepository authorRepository;
 
     public BookController() {
+    }
+
+    @Autowired
+    public BookController(BookService bookService, ModelMapper modelMapper,
+                          BookRepository bookRepository, AuthorRepository authorRepository) {
+        this.bookService = bookService;
+        this.modelMapper = modelMapper;
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     // add new book
@@ -53,8 +50,6 @@ public class BookController {
     public void addBookDto(@Valid @RequestBody BookBasicInfoDto bookBasicInfoDto) {
         Book book = bookService.convertToEntity(bookBasicInfoDto);
         bookService.save(book);
-//        Book bookAdded = bookService.save(book);
-//        return bookService.convertToDto(bookAdded);
     }
 
     // get all books
@@ -65,17 +60,11 @@ public class BookController {
         return books.stream().map(book -> modelMapper.map(book, BookBasicInfoDto.class)).collect(Collectors.toList());
     }
 
-//    // get all books
-//    @GetMapping(path = "api/books")
-//    public List<Book> getAllBooks(){
-//        List<Book> books = bookService.findAll();
-//        return books;
-//    }
 
     // get book by id
     @GetMapping(path = "/api/book/{id}")
-    public BookBasicInfoDto getBookByID(@PathVariable long id) throws ResourceNotFoundException {
-        return bookService.convertToDto(bookService.findById(id));
+    public BookDetailedInfoDto getBookByID(@PathVariable long id) throws ResourceNotFoundException {
+        return bookService.convertToDetailedDto(bookService.findById(id));
     }
 
     // get book by isbn

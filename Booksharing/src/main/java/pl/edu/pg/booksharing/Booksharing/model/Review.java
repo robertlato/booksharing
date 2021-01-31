@@ -1,6 +1,7 @@
 package pl.edu.pg.booksharing.Booksharing.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -74,6 +75,7 @@ public class Review {
         this.creationDate = creationDate;
     }
 
+    @JsonIgnore
     public Book getBook() {
         return book;
     }
@@ -82,6 +84,7 @@ public class Review {
         this.book = book;
     }
 
+    @JsonIgnore
     public User getUser() {
         return user;
     }

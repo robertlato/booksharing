@@ -4,6 +4,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo.BookDetailedInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface BookService {
     List<Book> findByOwnerEmail(String email) throws ResourceNotFoundException;
 
     BookBasicInfoDto convertToDto(Book book);
+
+    BookDetailedInfoDto convertToDetailedDto(Book book);
 
     BookSearchDto convertSearchToDto(Book book);
 

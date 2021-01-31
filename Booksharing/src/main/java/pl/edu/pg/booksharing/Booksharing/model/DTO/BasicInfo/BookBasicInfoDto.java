@@ -18,7 +18,6 @@ public class BookBasicInfoDto {
 
     private PublisherInfoForBookDto publisher;
 
-    // TODO add dto for genre
     private Genre genre;
 
     private SharePointEmailDto sharePoint;

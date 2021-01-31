@@ -8,6 +8,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.*;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.AuthorInfoForBookDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo.BookDetailedInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
 import pl.edu.pg.booksharing.Booksharing.repository.*;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
@@ -125,6 +126,13 @@ public class BookServiceImpl implements BookService {
         BookBasicInfoDto bookBasicInfoDto = modelMapper.map(book, BookBasicInfoDto.class);
 
         return bookBasicInfoDto;
+    }
+
+    @Override
+    public BookDetailedInfoDto convertToDetailedDto(Book book) {
+        BookDetailedInfoDto bookDetailedInfoDto = modelMapper.map(book, BookDetailedInfoDto.class);
+
+        return bookDetailedInfoDto;
     }
 
     @Override

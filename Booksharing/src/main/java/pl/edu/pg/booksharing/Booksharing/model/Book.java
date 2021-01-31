@@ -46,9 +46,6 @@ public class Book {
     @JsonIgnore
     private List<Borrowing> borrowings = new ArrayList<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
-//    @JsonIgnore
-//    private List<BookCopy> bookCopies = new ArrayList<>();
 
     @NotNull
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
