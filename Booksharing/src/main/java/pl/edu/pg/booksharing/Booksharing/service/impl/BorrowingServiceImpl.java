@@ -2,15 +2,14 @@ package pl.edu.pg.booksharing.Booksharing.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import pl.edu.pg.booksharing.Booksharing.component.AuthenticationFacadeImpl;
 import pl.edu.pg.booksharing.Booksharing.exception.BorrowedAlreadyException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
-import pl.edu.pg.booksharing.Booksharing.model.Book;
-import pl.edu.pg.booksharing.Booksharing.model.Borrowing;
+import pl.edu.pg.booksharing.Booksharing.model.*;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingReturnDto;
-import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
-import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.BorrowingRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.SharePointRepository;
@@ -31,6 +30,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     private UserRepository userRepository;
     private SharePointRepository sharePointRepository;
     private SharePointService sharePointService;
+    private AuthenticationFacadeImpl authenticationFacade;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -38,12 +38,13 @@ public class BorrowingServiceImpl implements BorrowingService {
     @Autowired
     public BorrowingServiceImpl(BorrowingRepository borrowingRepository, BookRepository bookRepository,
                                 BookService bookService, UserRepository userRepository,
-                                SharePointService sharePointService) {
+                                SharePointService sharePointService, AuthenticationFacadeImpl authenticationFacade) {
         this.borrowingRepository = borrowingRepository;
         this.bookRepository = bookRepository;
         this.bookService = bookService;
         this.userRepository = userRepository;
         this.sharePointService = sharePointService;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @Override
@@ -59,7 +60,8 @@ public class BorrowingServiceImpl implements BorrowingService {
 
     @Override
     public Borrowing convertToEntity(BorrowingDto borrowingDto) throws ResourceNotFoundException {
-        User user = userRepository.findByEmail(borrowingDto.getUser().getEmail());
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
         Book book = bookService.findById(borrowingDto.getBook().getId());
         SharePoint sharePoint = sharePointService.findById(borrowingDto.getSharePoint().getId());
 

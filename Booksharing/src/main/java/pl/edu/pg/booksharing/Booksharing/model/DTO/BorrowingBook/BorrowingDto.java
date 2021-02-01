@@ -1,5 +1,6 @@
 package pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,17 +15,15 @@ public class BorrowingDto {
 
     private SharePointBorrowingDto sharePoint;
 
-    private UserBorrowingDto user;
 
     public BorrowingDto() {
     }
 
-    public BorrowingDto(Timestamp checkOutDate, Timestamp checkInDate, BookBorrowingDto book, SharePointBorrowingDto sharePoint, UserBorrowingDto user) {
+    public BorrowingDto(Timestamp checkOutDate, Timestamp checkInDate, BookBorrowingDto book, SharePointBorrowingDto sharePoint) {
         this.checkOutDate = checkOutDate;
         this.checkInDate = checkInDate;
         this.book = book;
         this.sharePoint = sharePoint;
-        this.user = user;
     }
 
 
@@ -40,21 +39,11 @@ public class BorrowingDto {
     }
 
     public Timestamp getCheckInDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MONTH, 1);
-        Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
-        this.checkInDate = timestamp;
-
-        return checkInDate;
+        return null;
     }
 
     public void setCheckInDate(Timestamp checkInDate) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MONTH, 1);
-        Timestamp timestamp = new Timestamp(calendar.getTimeInMillis());
-        this.checkInDate = timestamp;
+        this.checkInDate = null;
     }
 
     public BookBorrowingDto getBook() {
@@ -73,11 +62,4 @@ public class BorrowingDto {
         this.sharePoint = sharePoint;
     }
 
-    public UserBorrowingDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserBorrowingDto user) {
-        this.user = user;
-    }
 }
