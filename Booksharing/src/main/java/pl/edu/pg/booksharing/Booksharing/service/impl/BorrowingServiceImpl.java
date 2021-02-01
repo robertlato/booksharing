@@ -8,6 +8,7 @@ import pl.edu.pg.booksharing.Booksharing.component.AuthenticationFacadeImpl;
 import pl.edu.pg.booksharing.Booksharing.exception.BorrowedAlreadyException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.*;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingInfo.BorrowingListInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingReturnDto;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRepository;
@@ -19,6 +20,8 @@ import pl.edu.pg.booksharing.Booksharing.service.BorrowingService;
 import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -98,5 +101,14 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setCheckInDate(timestamp);
         book.setBorrowed(false);
 
+    }
+
+    @Override
+    public List<BorrowingListInfoDto> findAllBorrowings() {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
+        List<Borrowing> borrowings = user.getBorrowings();
+
+        return borrowings.stream().map(borrowing -> modelMapper.map(borrowing, BorrowingListInfoDto.class)).collect(Collectors.toList());
     }
 }
