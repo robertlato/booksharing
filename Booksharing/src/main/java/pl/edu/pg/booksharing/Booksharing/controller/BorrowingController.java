@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.BorrowedAlreadyException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
+import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.Borrowing;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BookBorrowingDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingInfo.BorrowingListInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook.BorrowingReturnDto;
@@ -31,9 +33,9 @@ public class BorrowingController {
     }
 
     @PostMapping(path = "/api/borrowing/return")
-    public void returnBookBorrowing(@Valid @RequestBody BorrowingReturnDto borrowingReturnDto) throws ResourceNotFoundException {
-        Borrowing borrowing = borrowingService.convertToEntityReturn(borrowingReturnDto);
-        borrowingService.returnBook(borrowing);
+    public void returnBookBorrowing(@Valid @RequestBody BorrowingReturnDto borrowing) throws ResourceNotFoundException {
+        BookBorrowingDto book = borrowing.getBook();
+        borrowingService.returnBook(book.getId());
     }
 
     @GetMapping(path = "/api/user/borrowings")

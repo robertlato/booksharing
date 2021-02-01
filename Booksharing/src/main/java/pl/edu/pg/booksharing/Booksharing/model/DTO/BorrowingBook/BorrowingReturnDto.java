@@ -2,20 +2,20 @@ package pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingBook;
 
 public class BorrowingReturnDto {
 
-    private Long id;
+    private BookBorrowingDto book;
 
     public BorrowingReturnDto() {
     }
 
-    public BorrowingReturnDto(Long id) {
-        this.id = id;
+    public BorrowingReturnDto(BookBorrowingDto book) {
+        this.book = book;
     }
 
-    public Long getId() {
-        return id;
+    public BookBorrowingDto getBook() {
+        return book;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBook(BookBorrowingDto book) {
+        this.book = book;
     }
 }

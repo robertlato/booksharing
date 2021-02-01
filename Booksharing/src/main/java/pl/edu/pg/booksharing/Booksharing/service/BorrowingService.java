@@ -13,11 +13,9 @@ public interface BorrowingService {
 
     void borrow(Borrowing borrowing) throws ResourceNotFoundException, BorrowedAlreadyException;
 
-    void returnBook(Borrowing borrowing) throws ResourceNotFoundException;
+    void returnBook(long id) throws ResourceNotFoundException;
 
     Borrowing findById(long id);
-
-    Borrowing convertToEntityReturn(BorrowingReturnDto borrowingReturnDto) throws ResourceNotFoundException;
 
     Borrowing convertToEntity(BorrowingDto borrowingDto) throws ResourceNotFoundException;
 
