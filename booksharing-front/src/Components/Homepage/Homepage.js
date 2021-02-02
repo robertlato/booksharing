@@ -4,6 +4,7 @@ import MyMap from "../MyMap/MyMap";
 import AuthenticationService from "../../service/AuthenticationService";
 import ReactHTMLDatalist from "react-html-datalist";
 import axios from "axios";
+import SearchTable from "../SearchTable/SearchTable";
 
 class Homepage extends React.Component {
     constructor(props) {
@@ -82,6 +83,7 @@ class Homepage extends React.Component {
 
     render() {
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
+
         return (
             <div>
                 {isUserLoggedIn ? (
@@ -109,17 +111,12 @@ class Homepage extends React.Component {
                         name="wantedItem"
                         onChange={this.onChange}
                     />
-
                     <button onClick={this.onClickSearch}>Wyszukaj</button>
                 </form>
-                <ol>
-                    {this.state.books.map((book, index) => (
-                        <li key={index}> {book.title}</li>
-                    ))}
-                </ol>
-                {/* FORM'S END */}
                 <br />
-                <MyMap />
+                <SearchTable data={this.state.books} />
+                <br />
+                {/* <MyMap /> */}
             </div>
         );
     }

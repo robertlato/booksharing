@@ -9,9 +9,12 @@ class Login extends React.Component {
         this.state = {
             username: "",
             password: "",
+            usernameErrorCheck: false,
+            passwordErrorCheck: false,
             isLogged: false,
         };
 
+        this.isInputFromUserValid = this.isInputFromUserValid.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -22,25 +25,50 @@ class Login extends React.Component {
         });
     }
 
+    isInputFromUserValid() {
+        let usernameErrorCheck = false;
+        let passwordErrorCheck = false;
+
+        console.log("EO0");
+        if (this.state.username.length < 6 || this.state.username.length > 32) {
+            usernameErrorCheck = true;
+            this.setState({ usernameErrorCheck: true });
+            console.log("EO1 " + this.state.usernameErrorCheck);
+        }
+        if (this.state.password.length < 6 || this.state.password.length > 32) {
+            passwordErrorCheck = true;
+            this.setState({ passwordErrorCheck: true });
+            console.log("EO1 " + this.state.passwordErrorCheck);
+        }
+
+        if (usernameErrorCheck || passwordErrorCheck) {
+            return false;
+        }
+
+        return true;
+    }
+
     async onSubmit(event) {
         event.preventDefault();
 
-        AuthenticationService.executeBasicAuthenticationService(
-            this.state.username,
-            this.state.password
-        )
-            .then(() => {
-                AuthenticationService.registerSuccessfulLogin(
-                    this.state.username,
-                    this.state.password
-                );
-                console.log("dobre dane");
-            })
-            .then(() => this.setState({ isLogged: true }))
-            .then(() => window.location.reload())
-            .catch(() => {
-                console.log("złe dane");
-            });
+        if (this.isInputFromUserValid()) {
+            AuthenticationService.executeBasicAuthenticationService(
+                this.state.username,
+                this.state.password
+            )
+                .then(() => {
+                    AuthenticationService.registerSuccessfulLogin(
+                        this.state.username,
+                        this.state.password
+                    );
+                    console.log("dobre dane");
+                })
+                .then(() => this.setState({ isLogged: true }))
+                .then(() => window.location.reload())
+                .catch(() => {
+                    console.log("złe dane");
+                });
+        }
     }
 
     render() {
@@ -62,6 +90,9 @@ class Login extends React.Component {
                                 name="username"
                                 onChange={this.onChange}
                             />
+                            {this.state.usernameErrorCheck && (
+                                <div>Zły email</div>
+                            )}
                         </label>
                         <label>
                             <p>Hasło</p>
@@ -70,6 +101,9 @@ class Login extends React.Component {
                                 name="password"
                                 onChange={this.onChange}
                             />
+                            {this.state.passwordErrorCheck && (
+                                <div>Złe hasło</div>
+                            )}
                         </label>
                         <button onClick={this.onSubmit}>Zaloguj się</button>
                     </form>
