@@ -85,21 +85,25 @@ public class BorrowingServiceImpl implements BorrowingService {
         return borrowing;
     }
 
-    @Override
-    public Borrowing convertToEntityReturn(BorrowingReturnDto borrowingReturnDto) throws ResourceNotFoundException {
-        long borrowingId = borrowingReturnDto.getId();
-        Borrowing borrowing = borrowingRepository.findById(borrowingId);
-
-
-        return borrowing;
-    }
 
     @Override
-    public void returnBook(Borrowing borrowing) throws ResourceNotFoundException {
-        Book book = bookService.findById(borrowing.getBook().getId());
+    public void returnBook(long id) throws ResourceNotFoundException {
+        Book book = bookService.findById(id);
+        List<Borrowing> borrowings = book.getBorrowings();
+        Borrowing borrowing = null;
+        for (Borrowing borrowingReturn:
+                borrowings) {
+            if (borrowingReturn.getCheckInDate() == null)
+            {
+                borrowing = borrowingReturn;
+            }
+        }
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         borrowing.setCheckInDate(timestamp);
         book.setBorrowed(false);
+        borrowingRepository.save(borrowing);
+        bookRepository.save(book);
+
 
     }
 
