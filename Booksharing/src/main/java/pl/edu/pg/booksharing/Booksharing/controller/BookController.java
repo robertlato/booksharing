@@ -69,8 +69,14 @@ public class BookController {
 
     // get book by isbn
     @GetMapping(path = "/api/book/isbn/{isbn}")
-    public BookBasicInfoDto getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
-        return bookService.convertToDto(bookService.findByIsbn(isbn));
+    public List<BookBasicInfoDto> getBookByIsbn(@PathVariable String isbn) throws ResourceNotFoundException {
+        List<Book> books = bookService.findByIsbn(isbn);
+        List<BookBasicInfoDto> booksDto = new ArrayList<>();
+        for (Book book:
+             books) {
+            booksDto.add(bookService.convertToDto(book));
+        }
+         return booksDto;
     }
 
     // get books by owner email
