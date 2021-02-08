@@ -8,12 +8,15 @@ public class ReviewForBookDto {
 
     private java.sql.Timestamp creationDate;
 
+    private UserEmailDto user;
+
     public ReviewForBookDto() {
     }
 
-    public ReviewForBookDto(String review, Timestamp creationDate) {
+    public ReviewForBookDto(String review, Timestamp creationDate, UserEmailDto user) {
         this.review = review;
         this.creationDate = creationDate;
+        this.user = user;
     }
 
     public String getReview() {
@@ -30,5 +33,13 @@ public class ReviewForBookDto {
 
     public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public UserEmailDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserEmailDto user) {
+        this.user = user;
     }
 }
