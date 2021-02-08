@@ -23,7 +23,8 @@ public class ReviewServiceImpl implements ReviewService {
     private BookService bookService;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, AuthenticationFacadeImpl authenticationFacade, UserRepository userRepository, BookService bookService) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, AuthenticationFacadeImpl authenticationFacade,
+                             UserRepository userRepository, BookService bookService) {
         this.reviewRepository = reviewRepository;
         this.authenticationFacade = authenticationFacade;
         this.userRepository = userRepository;

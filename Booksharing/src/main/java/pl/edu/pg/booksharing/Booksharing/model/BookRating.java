@@ -20,7 +20,7 @@ public class BookRating {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
+    //@NotBlank
     @Min(1)
     @Max(5)
     private int rating;
