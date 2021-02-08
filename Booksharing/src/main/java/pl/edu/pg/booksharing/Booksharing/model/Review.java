@@ -22,7 +22,7 @@ public class Review {
     @NotBlank
     private String review;
 
-    @NotBlank
+    //@NotBlank
     private java.sql.Timestamp creationDate;
 
 
