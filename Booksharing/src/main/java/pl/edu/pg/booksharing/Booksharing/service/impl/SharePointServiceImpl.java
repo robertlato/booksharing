@@ -14,8 +14,10 @@ import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.AddressRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.SharePointRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
+import pl.edu.pg.booksharing.Booksharing.service.AddressService;
 import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,15 +28,17 @@ public class SharePointServiceImpl implements SharePointService {
     private AuthenticationFacadeImpl authenticationFacade;
     private UserRepository userRepository;
     private AddressRepository addressRepository;
+    private AddressService addressService;
 
 
     @Autowired
-    public SharePointServiceImpl(SharePointRepository sharePointRepository, ModelMapper modelMapper, AuthenticationFacadeImpl authenticationFacade, UserRepository userRepository, AddressRepository addressRepository) {
+    public SharePointServiceImpl(SharePointRepository sharePointRepository, ModelMapper modelMapper, AuthenticationFacadeImpl authenticationFacade, UserRepository userRepository, AddressRepository addressRepository, AddressService addressService) {
         this.sharePointRepository = sharePointRepository;
         this.modelMapper = modelMapper;
         this.authenticationFacade = authenticationFacade;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.addressService = addressService;
     }
 
 
@@ -104,5 +108,18 @@ public class SharePointServiceImpl implements SharePointService {
         SharepointInfoDto sharepointInfoDto = modelMapper.map(sharePoint, SharepointInfoDto.class);
 
         return sharepointInfoDto;
+    }
+
+    @Override
+    public List<SharePoint> findAllByAddressList(String city) {
+        List<SharePoint> sharePointsByAddress = new ArrayList<>();
+        List<Address> addresses = addressService.findByCity(city);
+        for (Address address:
+                addresses) {
+            if (address.getSharePoint() != null) {
+                sharePointsByAddress.add(address.getSharePoint());
+            }
+        }
+        return sharePointsByAddress;
     }
 }
