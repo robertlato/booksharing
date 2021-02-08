@@ -19,7 +19,13 @@ public class StatsController {
     }
 
     @GetMapping(path = "/api/stats/city/{city}")
-    public int getNumberOfBorrowingsPerCity(@PathVariable String city) {
-        return statsService.getNumberOfBorrowingsPerCity(city);
+    public String getNumberOfBorrowingsPerCity(@PathVariable String city) {
+        int borrowings = statsService.getNumberOfBorrowingsPerCity(city);
+        return "{ \"city\": \"" + city + "\", \"number\": \"" + borrowings +"\" }";
+    }
+
+    @GetMapping(path = "/api/stats/popular/sharepoint")
+    public String mostPopularSharePoint() {
+        return statsService.getMostPopularSharePoint();
     }
 }

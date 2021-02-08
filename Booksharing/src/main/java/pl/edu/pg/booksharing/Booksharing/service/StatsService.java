@@ -8,5 +8,5 @@ public interface StatsService {
 
     String getMostPopularSharePoint();
 
-    List<String> getMostPopularBooks(String isbn);
+    List<String> getMostPopularBooks();
 }

@@ -2,6 +2,7 @@ package pl.edu.pg.booksharing.Booksharing.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.Borrowing;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 import pl.edu.pg.booksharing.Booksharing.repository.BorrowingRepository;
@@ -11,8 +12,7 @@ import pl.edu.pg.booksharing.Booksharing.service.BookService;
 import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
 import pl.edu.pg.booksharing.Booksharing.service.StatsService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StatsServiceImpl implements StatsService {
@@ -53,11 +53,26 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public String getMostPopularSharePoint() {
-        return null;
+        List<SharePoint> sharePoints = sharePointRepository.findAll();
+        List<Borrowing> borrowings = new ArrayList<>();
+        Map<Long, Integer> sharePointBorrowingNumberMap = new HashMap<Long, Integer>();
+        for (SharePoint sharePoint:
+             sharePoints) {
+            borrowings = sharePoint.getBorrowings();
+            sharePointBorrowingNumberMap.put(sharePoint.getId(), borrowings.size());
+        }
+        Long idOfMostPopularSharePoint = Collections.max(sharePointBorrowingNumberMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        Integer numberOfBorrowings = Collections.max(sharePointBorrowingNumberMap.entrySet(), Map.Entry.comparingByValue()).getValue();
+
+        SharePoint mostPopularSharePoint = sharePointService.findById(idOfMostPopularSharePoint);
+        Address addressSharePoint = mostPopularSharePoint.getAddress();
+        String city = addressSharePoint.getCity();
+
+        return "{ \"city\": \"" + city + "\", \"number\": \"" + numberOfBorrowings +"\" }";
     }
 
     @Override
-    public List<String> getMostPopularBooks(String isbn) {
+    public List<String> getMostPopularBooks() {
         return null;
     }
 }
