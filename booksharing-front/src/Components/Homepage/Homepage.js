@@ -1,6 +1,6 @@
 import React from "react";
 import "./Homepage.css";
-import MyMap from "../MyMap/MyMap";
+// import MyMap from "../MyMap/MyMap";
 import AuthenticationService from "../../service/AuthenticationService";
 import ReactHTMLDatalist from "react-html-datalist";
 import axios from "axios";
