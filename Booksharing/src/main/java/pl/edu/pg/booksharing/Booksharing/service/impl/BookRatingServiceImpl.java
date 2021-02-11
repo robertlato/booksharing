@@ -14,6 +14,8 @@ import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookRatingService;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
+import java.util.List;
+
 @Repository
 public class BookRatingServiceImpl implements BookRatingService {
 
@@ -54,5 +56,24 @@ public class BookRatingServiceImpl implements BookRatingService {
         } else {
             bookRatingRepository.save(bookRating);
         }
+    }
+
+    @Override
+    public double getAverageRating(long id) throws ResourceNotFoundException {
+        Book book = bookService.findById(id);
+        List<BookRating> bookRatings = book.getBookRatings();
+        int allRatings = 0;
+        for (BookRating br:
+             bookRatings) {
+            allRatings = allRatings + br.getRating();
+        }
+
+        double avg = ((double)allRatings/bookRatings.size());
+
+        avg = avg*100;
+        avg = Math.round(avg);
+        avg = avg/100;
+
+        return avg;
     }
 }

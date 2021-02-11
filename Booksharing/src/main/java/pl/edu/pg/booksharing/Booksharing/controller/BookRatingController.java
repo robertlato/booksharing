@@ -1,10 +1,7 @@
 package pl.edu.pg.booksharing.Booksharing.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.BookRating;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.ReviewAndRating.BookRatingDto;
@@ -28,5 +25,12 @@ public class BookRatingController {
     public void addBookRating(@Valid @RequestBody BookRatingDto bookRatingDto) throws ResourceNotFoundException {
         BookRating bookRating = bookRatingService.convertToEntity(bookRatingDto);
         bookRatingService.addRating(bookRating);
+    }
+
+    //add average rating for book by id
+    @GetMapping(path = "api/rating/avg/{id}")
+    public String getAverageRating(@PathVariable long id) throws ResourceNotFoundException {
+        double avg = bookRatingService.getAverageRating(id);
+        return "{ \"avg\": \"" + avg + "\" }";
     }
 }

@@ -9,4 +9,6 @@ public interface BookRatingService {
     BookRating convertToEntity(BookRatingDto bookRatingDto) throws ResourceNotFoundException;
 
     void addRating(BookRating bookRating) throws ResourceNotFoundException;
+
+    double getAverageRating(long id) throws ResourceNotFoundException;
 }
