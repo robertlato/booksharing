@@ -1,6 +1,7 @@
 import React from "react";
 import "./Homepage.css";
-import MyMap from "../MyMap/MyMap";
+import LatoMap from "../LatoMap/LatoMap";
+// import MyMap from "../MyMap/MyMap";
 import AuthenticationService from "../../service/AuthenticationService";
 import ReactHTMLDatalist from "react-html-datalist";
 import axios from "axios";
@@ -14,6 +15,7 @@ class Homepage extends React.Component {
             searchBy: "",
             wantedItem: "",
             books: [],
+            updateMap: false,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -73,6 +75,8 @@ class Homepage extends React.Component {
                     console.log("działa wyszukiwarka");
                     console.log(res.data);
                     this.setState({ books: res.data });
+
+                    this.setState({updateMap: !this.state.updateMap});
                 }
             })
             .catch((error) => {
@@ -85,6 +89,7 @@ class Homepage extends React.Component {
         const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
 
         return (
+            <>
             <div>
                 {isUserLoggedIn ? (
                     <div> JEST ZALOGOWANY </div>
@@ -118,6 +123,8 @@ class Homepage extends React.Component {
                 <br />
                 {/* <MyMap /> */}
             </div>
+                <LatoMap data={this.state.books} updateMap={this.state.updateMap}/>
+            </>
         );
     }
 }
