@@ -1,12 +1,12 @@
 package pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo;
 
-import pl.edu.pg.booksharing.Booksharing.model.BookRating;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookRatingInfoDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.GenreInfoForBookDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.ReviewForBookDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.AuthorSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.PublisherSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.SharePointSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.Description;
-import pl.edu.pg.booksharing.Booksharing.model.Genre;
-import pl.edu.pg.booksharing.Booksharing.model.Review;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -28,15 +28,15 @@ public class BookDetailedInfoDto {
 
     private boolean isBorrowed;
 
-    private Genre genre;
+    private GenreInfoForBookDto genre;
 
     private java.sql.Date releaseDate;
 
     private Description description;
 
-    private List<BookRating> bookRatings = new ArrayList<>();
+    private List<BookRatingInfoDto> bookRatings = new ArrayList<>();
 
-    private List<Review> reviews = new ArrayList<>();
+    private List<ReviewForBookDto> reviews = new ArrayList<>();
 
 
     public BookDetailedInfoDto() {
@@ -99,11 +99,11 @@ public class BookDetailedInfoDto {
         isBorrowed = borrowed;
     }
 
-    public Genre getGenre() {
+    public GenreInfoForBookDto getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(GenreInfoForBookDto genre) {
         this.genre = genre;
     }
 
@@ -123,19 +123,19 @@ public class BookDetailedInfoDto {
         this.description = description;
     }
 
-    public List<BookRating> getBookRatings() {
+    public List<BookRatingInfoDto> getBookRatings() {
         return bookRatings;
     }
 
-    public void setBookRatings(List<BookRating> bookRatings) {
+    public void setBookRatings(List<BookRatingInfoDto> bookRatings) {
         this.bookRatings = bookRatings;
     }
 
-    public List<Review> getReviews() {
+    public List<ReviewForBookDto> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<ReviewForBookDto> reviews) {
         this.reviews = reviews;
     }
 }

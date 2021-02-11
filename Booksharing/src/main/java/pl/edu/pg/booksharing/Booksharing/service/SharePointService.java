@@ -19,4 +19,6 @@ public interface SharePointService {
     SharepointInfoDto convertToDto(SharePoint sharePoint);
 
     SharePoint findByEmail(String email);
+
+    List<SharePoint> findAllByAddressList(String city);
 }

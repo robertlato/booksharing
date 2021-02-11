@@ -62,12 +62,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findByIsbn(String isbn) throws ResourceNotFoundException {
-        Book book = bookRepository.findByIsbn(isbn);
-        if (book == null) {
+    public List<Book> findByIsbn(String isbn) throws ResourceNotFoundException {
+        List<Book> books = bookRepository.findAll();
+        List<Book> booksIsbnList = new ArrayList<>();
+        for (Book book:
+             books) {
+            if (book.getIsbn().equals(isbn)) {
+                booksIsbnList.add(book);
+            }
+        }
+        if (booksIsbnList == null) {
             throw new ResourceNotFoundException("Book with ISBN: " + isbn + " not found.");
         } else {
-            return book;
+            return booksIsbnList;
         }
     }
 

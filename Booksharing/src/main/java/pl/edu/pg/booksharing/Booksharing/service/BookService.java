@@ -17,7 +17,7 @@ public interface BookService {
 
     Book findById(long id) throws ResourceNotFoundException;
 
-    Book findByIsbn(String isbn) throws ResourceNotFoundException;
+    List<Book> findByIsbn(String isbn) throws ResourceNotFoundException;
 
     List<Book> findByOwnerEmail(String email) throws ResourceNotFoundException;
 
