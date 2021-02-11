@@ -109,6 +109,13 @@ public class StatsServiceImpl implements StatsService {
                         (e1, e2) -> null,
                         () -> new LinkedHashMap<String, Integer>()));
 
-        return sortedMap;
+        LinkedHashMap<String, Integer> sortedTopTen = sortedMap.entrySet().stream()
+                .limit(10)
+                .collect(Collectors.toMap(e -> e.getKey(),
+                        e-> e.getValue(),
+                        (e1, e2) -> null,
+                        () -> new LinkedHashMap<String, Integer>()));
+
+        return sortedTopTen;
     }
 }
