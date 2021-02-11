@@ -1,6 +1,7 @@
 import React from "react";
 import "./MyLibrary.css";
 import axios from "axios";
+import ReactTable from "react-table-6";
 import AuthenticationService from "../../../../service/AuthenticationService";
 
 class MyLibrary extends React.Component {
@@ -8,8 +9,66 @@ class MyLibrary extends React.Component {
         super(props);
         this.state = {
             userBooks: [],
+            columns: [
+                {
+                    Header: "Id",
+                    id: "row",
+                    maxWidth: 50,
+                    filterable: false,
+                    Cell: (row) => {
+                        return <div>{row.index + 1}</div>;
+                    },
+                },
+                {
+                    Header: "bookId",
+                    accessor: "id",
+                    show: false,
+                },
+                {
+                    Header: "Tytuł",
+                    accessor: "title",
+                    minWidth: 200,
+                },
+                {
+                    id: "Authors",
+                    Header: "Autorzy",
+                    accessor: (data) => {
+                        let authorAsString = "";
+                        authorAsString = data.authors.map((item) => {
+                            let dummy = "";
+                            dummy = dummy + item.firstName;
+                            dummy = dummy + " ";
+                            dummy = dummy + item.lastName;
+                            return dummy;
+                        });
+                        return authorAsString;
+                    },
+                },
+                {
+                    Header: "Wydawnictwo",
+                    accessor: "publisher.name",
+                },
+                {
+                    Header: "Stan",
+                    accessor: "borrowed",
+                    Cell: ({ row, original }) => {
+                        return original.borrowed === false ? (
+                            "Dostępna"
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    this.onClickBookReturn(original.id);
+                                }}
+                            >
+                                Przyjmij zwrot
+                            </button>
+                        );
+                    },
+                },
+            ],
         };
         this.loadUserBooks = this.loadUserBooks.bind(this);
+        this.onClickBookReturn = this.onClickBookReturn.bind(this);
     }
 
     componentDidMount() {
@@ -39,16 +98,44 @@ class MyLibrary extends React.Component {
             });
     }
 
+    async onClickBookReturn(bookId) {
+        axios
+            .post(
+                "http://localhost:8889/api/borrowing/return",
+                {
+                    book: {
+                        id: bookId,
+                    },
+                },
+                {
+                    headers: {
+                        authorization:
+                            "Basic " + localStorage.getItem("userToken"),
+                    },
+                }
+            )
+            .then((res) => {
+                if (res.status === 200) {
+                    window.alert("Zmieniono status!");
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log("NIE ZMIENIONO STATUSU");
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             <div>
                 <h1>Moja biblioteka</h1>
                 <br />
-                <ol>
-                    {this.state.userBooks.map((book) => (
-                        <li key={book.id}> {book.title}</li>
-                    ))}
-                </ol>
+                <ReactTable
+                    data={this.state.userBooks}
+                    columns={this.state.columns}
+                    defaultPageSize={5}
+                />
             </div>
         );
     }

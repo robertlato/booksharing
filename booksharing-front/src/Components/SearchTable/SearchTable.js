@@ -2,12 +2,14 @@ import React from "react";
 import "./SearchTable.css";
 import ReactTable from "react-table-6";
 import Modal from "react-modal";
+import axios from "axios";
 
 class SearchTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isModalOpened: false,
+            hasComponentChanged: false,
             foundBook: "",
             columns: [
                 {
@@ -22,6 +24,11 @@ class SearchTable extends React.Component {
                 {
                     Header: "bookId",
                     accessor: "id",
+                    show: false,
+                },
+                {
+                    Header: "sharePointId",
+                    accessor: "sharePoint.id",
                     show: false,
                 },
                 {
@@ -69,10 +76,30 @@ class SearchTable extends React.Component {
                         );
                     },
                 },
+                {
+                    Header: "Wypożycz",
+                    Cell: ({ row, original }) => {
+                        return original.borrowed === false ? (
+                            <button
+                                onClick={() => {
+                                    this.onClickBorrowBook(
+                                        original.id,
+                                        original.sharePoint.id
+                                    );
+                                }}
+                            >
+                                Wypożycz
+                            </button>
+                        ) : (
+                            "Wypożyczona"
+                        );
+                    },
+                },
             ],
         };
         this.onClickBookClose = this.onClickBookClose.bind(this);
         this.onClickBookOpen = this.onClickBookOpen.bind(this);
+        this.onClickBorrowBook = this.onClickBorrowBook.bind(this);
     }
 
     onClickBookOpen(index) {
@@ -90,11 +117,47 @@ class SearchTable extends React.Component {
         });
     }
 
+    async onClickBorrowBook(bookId, sharePointId) {
+        console.log("książki id: " + bookId);
+        console.log("sharepoint id: " + sharePointId);
+
+        axios
+            .post(
+                "http://localhost:8889/api/borrowing",
+                {
+                    book: {
+                        id: bookId,
+                    },
+                    sharePoint: {
+                        id: sharePointId,
+                    },
+                },
+                {
+                    headers: {
+                        authorization:
+                            "Basic " + localStorage.getItem("userToken"),
+                    },
+                }
+            )
+            .then((res) => {
+                if (res.status === 200) {
+                    window.alert("Wypożyczono!");
+                    console.log("Wypożyczono!");
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log("NIE WYPOŻYCZONO");
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             <div>
                 <br />
                 <ReactTable
+                    id="book-table"
                     data={this.props.data}
                     columns={this.state.columns}
                     defaultPageSize={5}
