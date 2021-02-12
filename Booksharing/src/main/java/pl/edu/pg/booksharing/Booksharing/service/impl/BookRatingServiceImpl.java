@@ -14,6 +14,8 @@ import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
 import pl.edu.pg.booksharing.Booksharing.service.BookRatingService;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
+import java.util.List;
+
 @Repository
 public class BookRatingServiceImpl implements BookRatingService {
 
@@ -38,6 +40,18 @@ public class BookRatingServiceImpl implements BookRatingService {
         User user = userRepository.findByEmail(authentication.getName());
         Book book = bookService.findById(bookRatingDto.getBook().getId());
 
+        List<BookRating> bookRatingList = book.getBookRatings();
+
+        for (BookRating br:
+             bookRatingList) {
+            if (br.getUser().getId() == user.getId() && br.getBook().getId() == book.getId()) {
+                BookRating bookRating = br;
+                bookRating.setRating(bookRatingDto.getRating());
+
+                return bookRating;
+            }
+        }
+
         BookRating bookRating = new BookRating(
                 bookRatingDto.getRating(),
                 book,
@@ -49,10 +63,30 @@ public class BookRatingServiceImpl implements BookRatingService {
     @Override
     public void addRating(BookRating bookRating) throws ResourceNotFoundException {
         Book book = bookService.findById(bookRating.getBook().getId());
+
         if (book.getId() == null) {
             throw new ResourceNotFoundException("You are trying to rate non existing book");
         } else {
             bookRatingRepository.save(bookRating);
         }
+    }
+
+    @Override
+    public double getAverageRating(long id) throws ResourceNotFoundException {
+        Book book = bookService.findById(id);
+        List<BookRating> bookRatings = book.getBookRatings();
+        int allRatings = 0;
+        for (BookRating br:
+             bookRatings) {
+            allRatings = allRatings + br.getRating();
+        }
+
+        double avg = ((double)allRatings/bookRatings.size());
+
+        avg = avg*100;
+        avg = Math.round(avg);
+        avg = avg/100;
+
+        return avg;
     }
 }

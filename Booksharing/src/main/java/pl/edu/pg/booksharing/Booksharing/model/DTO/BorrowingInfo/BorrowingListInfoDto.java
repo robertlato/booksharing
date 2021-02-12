@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 
 public class BorrowingListInfoDto {
 
+    private Long id;
+
     // borrow the book
     //@NotBlank
     private java.sql.Timestamp checkOutDate;
@@ -47,5 +49,13 @@ public class BorrowingListInfoDto {
 
     public void setBook(BorrowedBookInfoDto book) {
         this.book = book;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
