@@ -49,7 +49,7 @@ class ProfileSettings extends React.Component {
                 }
             )
             .then((res) => {
-                if (res.status === 200) {
+                if (res.status === 200 || res.status === 204) {
                     window.alert("Zmieniono adres");
                     document.getElementById("book-form").reset();
                 }

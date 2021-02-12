@@ -29,16 +29,13 @@ class Login extends React.Component {
         let usernameErrorCheck = false;
         let passwordErrorCheck = false;
 
-        console.log("EO0");
         if (this.state.username.length < 6 || this.state.username.length > 32) {
             usernameErrorCheck = true;
             this.setState({ usernameErrorCheck: true });
-            console.log("EO1 " + this.state.usernameErrorCheck);
         }
         if (this.state.password.length < 6 || this.state.password.length > 32) {
             passwordErrorCheck = true;
             this.setState({ passwordErrorCheck: true });
-            console.log("EO1 " + this.state.passwordErrorCheck);
         }
 
         if (usernameErrorCheck || passwordErrorCheck) {
@@ -66,7 +63,7 @@ class Login extends React.Component {
                 .then(() => this.setState({ isLogged: true }))
                 .then(() => window.location.reload())
                 .catch(() => {
-                    console.log("złe dane");
+                    // window.alert("Podano złe dane");
                 });
         }
     }

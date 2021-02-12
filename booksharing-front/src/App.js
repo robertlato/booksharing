@@ -35,7 +35,7 @@ class App extends React.Component {
                             component={ProfilePage}
                         />
                         <AuthenticatedRoute
-                            path="/searchbook"
+                            path="/myborrowedbooks"
                             exact
                             component={ProfilePage}
                         />

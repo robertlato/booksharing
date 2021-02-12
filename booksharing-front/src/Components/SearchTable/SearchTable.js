@@ -3,6 +3,7 @@ import "./SearchTable.css";
 import ReactTable from "react-table-6";
 import Modal from "react-modal";
 import axios from "axios";
+import AuthenticationService from "../../service/AuthenticationService";
 
 class SearchTable extends React.Component {
     constructor(props) {
@@ -118,38 +119,39 @@ class SearchTable extends React.Component {
     }
 
     async onClickBorrowBook(bookId, sharePointId) {
-        console.log("książki id: " + bookId);
-        console.log("sharepoint id: " + sharePointId);
-
-        axios
-            .post(
-                "http://localhost:8889/api/borrowing",
-                {
-                    book: {
-                        id: bookId,
+        if (AuthenticationService.isUserLoggedIn() === false) {
+            window.alert("Musisz się zalogować!");
+        } else {
+            axios
+                .post(
+                    "http://localhost:8889/api/borrowing",
+                    {
+                        book: {
+                            id: bookId,
+                        },
+                        sharePoint: {
+                            id: sharePointId,
+                        },
                     },
-                    sharePoint: {
-                        id: sharePointId,
-                    },
-                },
-                {
-                    headers: {
-                        authorization:
-                            "Basic " + localStorage.getItem("userToken"),
-                    },
-                }
-            )
-            .then((res) => {
-                if (res.status === 200) {
-                    window.alert("Wypożyczono!");
-                    console.log("Wypożyczono!");
-                    window.location.reload();
-                }
-            })
-            .catch((error) => {
-                console.log("NIE WYPOŻYCZONO");
-                console.log(error);
-            });
+                    {
+                        headers: {
+                            authorization:
+                                "Basic " + localStorage.getItem("userToken"),
+                        },
+                    }
+                )
+                .then((res) => {
+                    if (res.status === 200) {
+                        window.alert("Wypożyczono!");
+                        console.log("Wypożyczono!");
+                        window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.log("NIE WYPOŻYCZONO");
+                    console.log(error);
+                });
+        }
     }
 
     render() {
@@ -167,41 +169,73 @@ class SearchTable extends React.Component {
                     style={{
                         overlay: {
                             position: "fixed",
-                            top: 0,
-                            left: 0,
+                            top: 200,
+                            left: 350,
                             right: 0,
                             bottom: 0,
                             backgroundColor: "rgba(255, 255, 255, 0.75)",
                             width: "60%",
+                            height: "60%",
+                        },
+                        content: {
+                            textAlign: "center",
+                            position: "absolute",
+                            top: "40px",
+                            left: "40px",
+                            right: "40px",
+                            bottom: "40px",
+                            border: "1px solid #ccc",
+                            background: "#fff",
+                            overflow: "auto",
+                            WebkitOverflowScrolling: "touch",
+                            borderRadius: "4px",
+                            outline: "none",
+                            padding: "20px",
                         },
                     }}
                 >
                     <h2>Tytuł: {this.state.foundBook.title}</h2>
                     <h3>
-                        Autor:
+                        Autor:{" "}
                         {this.state.foundBook.authors &&
                             this.state.foundBook.authors.map((author) => {
                                 return author.firstName + " " + author.lastName;
                             })}
                     </h3>
                     <h3>
-                        Wydawnictwo:
+                        Wydawnictwo:{" "}
                         {this.state.foundBook.publisher &&
                             this.state.foundBook.publisher.name}
                     </h3>
                     <h3>
-                        Stan:
+                        Stan:{" "}
                         {this.state.foundBook.borrowed === false && "Dostępna"}
                         {this.state.foundBook.borrowed === true &&
                             "Wypożyczona"}
                     </h3>
                     <h3>
-                        Dostępna w mieście:
-                        {this.state.foundBook.sharePoint &&
-                            this.state.foundBook.sharePoint.address.city}
+                        Dostępna pod adresem:{" "}
+                        {this.state.foundBook.sharePoint ? (
+                            <div>
+                                {
+                                    this.state.foundBook.sharePoint.address
+                                        .country
+                                }{" "}
+                                {this.state.foundBook.sharePoint.address.city}
+                                {" ul."}
+                                {this.state.foundBook.sharePoint.address.street}
+                                {" nr "}
+                                {
+                                    this.state.foundBook.sharePoint.address
+                                        .houseNumber
+                                }
+                            </div>
+                        ) : (
+                            "adres się nie załadował, przepraszamy"
+                        )}
                     </h3>
                     <h3>
-                        Właściciel:
+                        Właściciel:{" "}
                         {this.state.foundBook.sharePoint &&
                             this.state.foundBook.sharePoint.user.email}
                     </h3>

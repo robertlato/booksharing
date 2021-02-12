@@ -20,11 +20,19 @@ class Navbar extends React.Component {
                 <div className="navbar-login">
                     {isUserLoggedIn ? (
                         <div>
+                            <p>
+                                <b>
+                                    {AuthenticationService.getLoggedInUserName()}
+                                </b>
+                            </p>
                             <Link to="/profile">Mój profil</Link>
                             <Link to="/logout">Wyloguj</Link>
                         </div>
                     ) : (
-                        <Link to="/login">Zaloguj się</Link>
+                        <div>
+                            <Link to="/login">Zaloguj się</Link>
+                            <Link to="/register">Utwórz konto</Link>
+                        </div>
                     )}
                 </div>
                 <div className="navbar-list-container">

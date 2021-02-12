@@ -2,7 +2,7 @@ import React from "react";
 import "./ProfilePage.css";
 import AuthenticatedRoute from "../../Components/Authenticate/AuthenticatedRoute";
 import ProfileNavbar from "./ProfileNavbar";
-import SearchBook from "./ProfilePageComponents/SearchBook/SearchBook";
+import MyBorrowedBooks from "./ProfilePageComponents/MyBorrowedBooks/MyBorrowedBooks";
 import AddBook from "./ProfilePageComponents/AddBook/AddBook";
 import MyLibrary from "./ProfilePageComponents/MyLibrary/MyLibrary";
 import ProfileSettings from "./ProfilePageComponents/ProfileSettings/ProfileSettings";
@@ -13,9 +13,9 @@ class ProfilePage extends React.Component {
             <div className="AppProfile">
                 <ProfileNavbar />
                 <AuthenticatedRoute
-                    path="/searchbook"
+                    path="/myborrowedbooks"
                     exact
-                    component={SearchBook}
+                    component={MyBorrowedBooks}
                 />
                 <AuthenticatedRoute
                     path="/mylibrary"

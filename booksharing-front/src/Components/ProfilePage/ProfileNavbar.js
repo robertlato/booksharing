@@ -9,8 +9,11 @@ class ProfileNavbar extends React.Component {
                 <div className="profile-navbar-list-container">
                     <ul className="profile-navbar-list">
                         <li>
-                            <NavLink to="/searchbook" activeClassName="active">
-                                Wyszukiwarka książek
+                            <NavLink
+                                to="/myborrowedbooks"
+                                activeClassName="active"
+                            >
+                                Wypożyczone książki
                             </NavLink>
                         </li>
                         <li>

@@ -44,8 +44,8 @@ class Register extends React.Component {
                 }
             })
             .catch((error) => {
-                console.log("nie przeszła rejestracja");
-                console.log(error);
+                window.alert("Podano złe dane");
+                // console.log(error);
             });
     }
 
@@ -103,7 +103,7 @@ class Register extends React.Component {
                         <label>
                             <p>Numer telefonu</p>
                             <input
-                                type="password"
+                                type="text"
                                 name="phonenumber"
                                 onChange={this.onChange}
                             />

@@ -2,7 +2,6 @@ import React from "react";
 import "./Homepage.css";
 import LatoMap from "../LatoMap/LatoMap";
 // import MyMap from "../MyMap/MyMap";
-import AuthenticationService from "../../service/AuthenticationService";
 import ReactHTMLDatalist from "react-html-datalist";
 import axios from "axios";
 import SearchTable from "../SearchTable/SearchTable";
@@ -76,7 +75,7 @@ class Homepage extends React.Component {
                     console.log(res.data);
                     this.setState({ books: res.data });
 
-                    this.setState({updateMap: !this.state.updateMap});
+                    this.setState({ updateMap: !this.state.updateMap });
                 }
             })
             .catch((error) => {
@@ -86,44 +85,40 @@ class Homepage extends React.Component {
     }
 
     render() {
-        const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
-
         return (
             <>
-            <div>
-                {isUserLoggedIn ? (
-                    <div> JEST ZALOGOWANY </div>
-                ) : (
-                    <div>NIE JEST ZALOGOWANY</div>
-                )}
-                <h1>Wyszukiwarka</h1>
+                <div>
+                    <h1>Wyszukiwarka</h1>
 
-                {/* Tutaj form do wyszukiwarki */}
-                <form id="book-form">
-                    <ReactHTMLDatalist
-                        name={"searchBy"}
-                        onChange={this.onChange}
-                        options={[
-                            { text: "Tytuł", value: "1" },
-                            { text: "Autor", value: "2" },
-                            { text: "Wydawnictwo", value: "3" },
-                            { text: "ISBN", value: "4" },
-                            { text: "Miasto", value: "5" },
-                        ]}
-                    />
-                    <input
-                        type="text"
-                        name="wantedItem"
-                        onChange={this.onChange}
-                    />
-                    <button onClick={this.onClickSearch}>Wyszukaj</button>
-                </form>
-                <br />
-                <SearchTable data={this.state.books} />
-                <br />
-                {/* <MyMap /> */}
-            </div>
-                <LatoMap data={this.state.books} updateMap={this.state.updateMap}/>
+                    {/* Tutaj form do wyszukiwarki */}
+                    <form id="book-form">
+                        <ReactHTMLDatalist
+                            name={"searchBy"}
+                            onChange={this.onChange}
+                            options={[
+                                { text: "Tytuł", value: "1" },
+                                { text: "Autor", value: "2" },
+                                { text: "Wydawnictwo", value: "3" },
+                                { text: "ISBN", value: "4" },
+                                { text: "Miasto", value: "5" },
+                            ]}
+                        />
+                        <input
+                            type="text"
+                            name="wantedItem"
+                            onChange={this.onChange}
+                        />
+                        <button onClick={this.onClickSearch}>Wyszukaj</button>
+                    </form>
+                    <br />
+                    <SearchTable data={this.state.books} />
+                    <br />
+                    {/* <MyMap /> */}
+                </div>
+                <LatoMap
+                    data={this.state.books}
+                    updateMap={this.state.updateMap}
+                />
             </>
         );
     }
