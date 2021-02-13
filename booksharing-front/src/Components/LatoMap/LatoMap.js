@@ -16,16 +16,21 @@ import axios from "axios";
 import "ol/ol.css";
 import Overlay from "ol/Overlay";
 import ReactDOM from "react-dom";
+import LineString from 'ol/geom/LineString';
+import Stroke from 'ol/style/Stroke';
 
 class LatoMap extends React.Component {
     constructor(props) {
         super(props);
-        this.pointList = [];
         this.vectorSource = new VectorSource({});
+        this.routeVectorSource = new VectorSource({});
         this.state = {
             books: this.props.data,
             updateMap: false,
             myText: "test",
+            createRoute: false,
+            toPoint: null,
+            fromPoint: null,
         };
 
         this.map = new Map({
@@ -40,6 +45,9 @@ class LatoMap extends React.Component {
                 new VectorLayer({
                     source: this.vectorSource,
                 }),
+                new VectorLayer({
+                    source: this.routeVectorSource,
+                }),
             ],
             target: null,
         });
@@ -52,7 +60,6 @@ class LatoMap extends React.Component {
             geometry: new Point(olProj.fromLonLat([lon, lat])),
             // geometry: new Point(olProj.transform([18, 54], 'EPSG:4326','EPSG:3857')),
             name: "Sharepoint",
-            // data: data,
             city: city,
             street: street,
             houseNumber: houseNumber,
@@ -84,8 +91,13 @@ class LatoMap extends React.Component {
         this.map.on("click", (e) => {
             var pixel = this.map.getEventPixel(e.originalEvent);
             if (this.map.hasFeatureAtPixel(pixel)) {
-                console.log(this.map.getFeaturesAtPixel(pixel));
+
                 let myFeatures = this.map.getFeaturesAtPixel(pixel);
+
+                this.setState({
+                    toPoint: olProj.transform(myFeatures[0].getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326')
+                });
+
                 let isBorrowed = myFeatures[0].get("borrowed")
                     ? "wypożyczona"
                     : "dostępna";
@@ -103,11 +115,33 @@ class LatoMap extends React.Component {
                     isBorrowed;
 
                 this.setState({ myText: query });
-                console.log(myFeatures[0].get("data"));
                 this.popup.setPosition(e.coordinate);
                 this.map.addOverlay(this.popup);
-            } else if (this.map.getOverlays) {
+            } else if (this.map.getOverlays && !this.state.createRoute) {
+
                 this.map.removeOverlay(this.popup);
+                this.setState({
+                    toPoint: null
+                })
+
+            } else if (this.map.getOverlays && this.state.createRoute) {
+                // wyznacz trase:
+
+                // wyznacz punkty koncowe trasy
+                let myPoint = this.map.getCoordinateFromPixel(pixel);
+                this.setState({
+                    fromPoint: olProj.transform(myPoint, 'EPSG:3857', 'EPSG:4326')
+                })
+
+                // wyswietl trase z fromPoint do toPoint
+                this.getRoute();
+                // dezaktywuj wyznaczanie trasy
+                this.setState({ createRoute: false });
+                // usun punkty
+                this.setState({
+                    fromPoint: null,
+                    toPoint: null,
+                })
             }
         });
     }
@@ -136,8 +170,6 @@ class LatoMap extends React.Component {
                 myData.sharePoint.address.street,
                 myData.sharePoint.address.houseNumber
             );
-            console.log(result);
-            console.log(myData);
             let lon = result.data[0].lon;
             let lat = result.data[0].lat;
             this.addMarker(
@@ -156,8 +188,8 @@ class LatoMap extends React.Component {
     componentDidUpdate() {
         if (this.state.updateMap != this.props.updateMap) {
             if (this.props.data.length > 0) {
-                // console.log(this.props.data.length);
                 this.vectorSource.clear();
+                this.routeVectorSource.clear();
                 if (this.map.getOverlays) {
                     this.map.removeOverlay(this.popup);
                 }
@@ -165,17 +197,72 @@ class LatoMap extends React.Component {
                 // dla kazdej znalezionej ksiazki wyszukaj adres
                 // zamien adres na lon lat
                 this.fetchDataSync();
-                console.log("po wywolaniu pobierzDaneSync");
             }
             this.setState({ updateMap: this.props.updateMap });
         }
     }
+
+    routeCreationTrigger = () => {
+        this.setState({ createRoute: true });
+        // usun popup
+        this.map.removeOverlay(this.popup);
+        this.routeVectorSource.clear();
+    }
+
+    fetchRouteCoords = async () => {
+        try {
+            const url = "http://h2096617.stratoserver.net:443/brouter?lonlats="
+            + this.state.fromPoint[0]
+            + ","
+            + this.state.fromPoint[1]
+            + "|"
+            + this.state.toPoint[0]
+            + ","
+            + this.state.toPoint[1]
+            + "&profile=car-fast&alternativeidx=0&format=geojson";
+            const res = await axios.get(url);
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    getRoute = async () => {
+        const result = await this.fetchRouteCoords();
+        this.getRoutePolyline(result);
+    }
+
+
+    getRoutePolyline = async (result) => {
+        var pointList = [];
+        let route = result.data.features[0].geometry.coordinates;
+        let routeLength = route.length;
+        for (var i = 0; i < routeLength; i++) {
+            let point = olProj.fromLonLat([route[i][0], route[i][1]]);
+            pointList.push(point);
+        }
+        let lineFeature = new Feature({
+            geometry: new LineString(pointList),
+        });
+        let lineStyle = new Style({
+            stroke: new Stroke({
+                color: "blue",
+                width: 4,
+            })
+        });
+        lineFeature.setStyle(lineStyle);
+        this.routeVectorSource.addFeature(lineFeature);
+    }
+
+
     render() {
         return (
             <div id="map" class="map">
                 <div id="popup">
                     <div id="mytext">
                         <p>{this.state.myText}</p>
+                        <button onClick={this.routeCreationTrigger} type="button">Wyznacz trasę</button>
                     </div>
                 </div>
             </div>
