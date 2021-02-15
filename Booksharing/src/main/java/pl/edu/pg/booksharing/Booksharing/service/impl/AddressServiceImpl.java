@@ -31,8 +31,10 @@ public class AddressServiceImpl implements AddressService {
         List<Address> addressesCity = new ArrayList<>();
         for (Address address:
              allAddresses) {
-            if (address.getCity().equalsIgnoreCase(city)) {
-                addressesCity.add(address);
+            if (address.getCity() != null) {
+                if (address.getCity().equalsIgnoreCase(city)) {
+                    addressesCity.add(address);
+                }
             }
         }
         return addressesCity;
