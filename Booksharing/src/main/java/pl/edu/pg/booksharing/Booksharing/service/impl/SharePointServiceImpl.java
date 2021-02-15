@@ -76,24 +76,37 @@ public class SharePointServiceImpl implements SharePointService {
 
             Address userSharePointAddress = user.getSharePoints().get(0).getAddress();
 
-            if (address.getCountry() != null) {
+            if (!address.getCountry().equals("")) {
                 userSharePointAddress.setCountry(address.getCountry());
             }
 
-            if (address.getCity() != null) {
+            if (!address.getCity().equals("")) {
                 userSharePointAddress.setCity(address.getCity());
             }
 
-            if (address.getPostalCode() != null) {
+            if (!address.getPostalCode().equals("")) {
                 userSharePointAddress.setPostalCode(address.getPostalCode());
             }
 
-            if (address.getStreet() != null) {
+            if (!address.getStreet().equals("")) {
                 userSharePointAddress.setStreet(address.getStreet());
             }
 
-            if (address.getHouseNumber() != null) {
+            if (!address.getHouseNumber().equals("")) {
                 userSharePointAddress.setHouseNumber(address.getHouseNumber());
+            }
+//
+//            if (address.getLat() != 0) {
+//                userSharePointAddress.setLat(address.getLat());
+//            }
+//
+//            if (address.getLon() != 0) {
+//                userSharePointAddress.setLon(address.getLon());
+//            }
+
+            if (address.getLat() != 0 && address.getLon() != 0) {
+                userSharePointAddress.setLat(address.getLat());
+                userSharePointAddress.setLon(address.getLon());
             }
 
             addressRepository.save(userSharePointAddress);

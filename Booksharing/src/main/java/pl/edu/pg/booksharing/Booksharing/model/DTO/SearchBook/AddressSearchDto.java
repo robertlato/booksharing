@@ -7,6 +7,8 @@ public class AddressSearchDto {
     private String postalCode;
     private String street;
     private String houseNumber;
+    private Float lon;
+    private Float lat;
 
     public AddressSearchDto() {
     }
@@ -57,5 +59,21 @@ public class AddressSearchDto {
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
+    }
+
+    public Float getLon() {
+        return lon;
+    }
+
+    public void setLon(Float lon) {
+        this.lon = lon;
+    }
+
+    public Float getLat() {
+        return lat;
+    }
+
+    public void setLat(Float lat) {
+        this.lat = lat;
     }
 }

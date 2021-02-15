@@ -22,6 +22,8 @@ public class Address {
     private String postalCode;
     private String street;
     private String houseNumber;
+    private Float lon;
+    private Float lat;
 
 
     @JsonIgnore
@@ -38,12 +40,14 @@ public class Address {
     public Address() {
     }
 
-    public Address(String country, String city, String postalCode, String street, String houseNumber) {
+    public Address(String country, String city, String postalCode, String street, String houseNumber, Float lon, Float lat) {
         this.country = country;
         this.city = city;
         this.postalCode = postalCode;
         this.street = street;
         this.houseNumber = houseNumber;
+        this.lon = lon;
+        this.lat = lat;
     }
 
 
@@ -112,5 +116,21 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public Float getLon() {
+        return lon;
+    }
+
+    public void setLon(float lon) {
+        this.lon = lon;
+    }
+
+    public Float getLat() {
+        return lat;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
     }
 }

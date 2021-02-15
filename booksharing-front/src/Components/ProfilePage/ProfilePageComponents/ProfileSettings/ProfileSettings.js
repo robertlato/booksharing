@@ -14,6 +14,8 @@ class ProfileSettings extends React.Component {
             street: "",
             houseNumber: "",
             postalCode: "",
+            lon: null,
+            lat: null,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -25,11 +27,45 @@ class ProfileSettings extends React.Component {
         });
     }
 
+    fetchCoords = async (city, street, houseNumber) => {
+        try {
+            const url =
+                "https://nominatim.openstreetmap.org/search?city="
+                + city
+                + "&street="
+                + houseNumber
+                + "%20"
+                + street
+                + "&format=json";
+            const res = await axios.get(url);
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     async onAdressSubmit(event) {
         event.preventDefault();
         //
         const BASE_URL = "http://localhost:8889/api/sharepoint/";
         const EXPANDED_URL = BASE_URL + this.state.userName;
+
+
+        if (this.state.city != "" && this.state.street != "" && this.state.houseNumber != "") {
+
+            const result = await this.fetchCoords(
+                this.state.city,
+                this.state.street,
+                this.state.houseNumber
+            );
+
+            this.setState({
+                lon: result.data[0].lon,
+                lat: result.data[0].lat,
+
+            });
+
+        }
 
         axios
             .patch(
@@ -40,6 +76,8 @@ class ProfileSettings extends React.Component {
                     street: this.state.street,
                     houseNumber: this.state.houseNumber,
                     postalCode: this.state.postalCode,
+                    lon: this.state.lon,
+                    lat: this.state.lat,
                 },
                 {
                     headers: {
@@ -51,7 +89,7 @@ class ProfileSettings extends React.Component {
             .then((res) => {
                 if (res.status === 200 || res.status === 204) {
                     window.alert("Zmieniono adres");
-                    document.getElementById("book-form").reset();
+                    document.getElementById("sharepoint-form").reset();
                 }
             })
             .catch((error) => {
@@ -63,7 +101,7 @@ class ProfileSettings extends React.Component {
     render() {
         return (
             <div>
-                <h1>Ustawienia - Jeszcze nie działający komponent</h1>
+                <h1>Ustawienia konta</h1>
                 <div>
                     <h2>Ustaw adres</h2>
                     <form id="sharepoint-form">

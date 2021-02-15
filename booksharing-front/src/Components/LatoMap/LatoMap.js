@@ -146,35 +146,12 @@ class LatoMap extends React.Component {
         });
     }
 
-    fetchCoords = async (city, street, houseNumber) => {
-        try {
-            const url =
-                "https://nominatim.openstreetmap.org/search?city=" +
-                city +
-                "&street=" +
-                houseNumber +
-                "%20" +
-                street +
-                "&format=json";
-            const res = await axios.get(url);
-            return res;
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
-    fetchDataSync = async () => {
+    fetchDataSync = () => {
         for (const myData of this.props.data) {
-            const result = await this.fetchCoords(
-                myData.sharePoint.address.city,
-                myData.sharePoint.address.street,
-                myData.sharePoint.address.houseNumber
-            );
-            let lon = result.data[0].lon;
-            let lat = result.data[0].lat;
             this.addMarker(
-                lon,
-                lat,
+                myData.sharePoint.address.lon,
+                myData.sharePoint.address.lat,
                 myData.sharePoint.address.city,
                 myData.sharePoint.address.street,
                 myData.sharePoint.address.houseNumber,
