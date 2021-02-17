@@ -47,11 +47,6 @@ class Navbar extends React.Component {
                                 FAQ
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/aboutus" activeClassName="active">
-                                O nas
-                            </NavLink>
-                        </li>
                     </ul>
                 </div>
             </nav>

@@ -16,8 +16,8 @@ import axios from "axios";
 import "ol/ol.css";
 import Overlay from "ol/Overlay";
 import ReactDOM from "react-dom";
-import LineString from 'ol/geom/LineString';
-import Stroke from 'ol/style/Stroke';
+import LineString from "ol/geom/LineString";
+import Stroke from "ol/style/Stroke";
 
 class LatoMap extends React.Component {
     constructor(props) {
@@ -91,11 +91,14 @@ class LatoMap extends React.Component {
         this.map.on("click", (e) => {
             var pixel = this.map.getEventPixel(e.originalEvent);
             if (this.map.hasFeatureAtPixel(pixel)) {
-
                 let myFeatures = this.map.getFeaturesAtPixel(pixel);
 
                 this.setState({
-                    toPoint: olProj.transform(myFeatures[0].getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326')
+                    toPoint: olProj.transform(
+                        myFeatures[0].getGeometry().getCoordinates(),
+                        "EPSG:3857",
+                        "EPSG:4326"
+                    ),
                 });
 
                 let isBorrowed = myFeatures[0].get("borrowed")
@@ -118,20 +121,22 @@ class LatoMap extends React.Component {
                 this.popup.setPosition(e.coordinate);
                 this.map.addOverlay(this.popup);
             } else if (this.map.getOverlays && !this.state.createRoute) {
-
                 this.map.removeOverlay(this.popup);
                 this.setState({
-                    toPoint: null
-                })
-
+                    toPoint: null,
+                });
             } else if (this.map.getOverlays && this.state.createRoute) {
                 // wyznacz trase:
 
                 // wyznacz punkty koncowe trasy
                 let myPoint = this.map.getCoordinateFromPixel(pixel);
                 this.setState({
-                    fromPoint: olProj.transform(myPoint, 'EPSG:3857', 'EPSG:4326')
-                })
+                    fromPoint: olProj.transform(
+                        myPoint,
+                        "EPSG:3857",
+                        "EPSG:4326"
+                    ),
+                });
 
                 // wyswietl trase z fromPoint do toPoint
                 this.getRoute();
@@ -141,11 +146,10 @@ class LatoMap extends React.Component {
                 this.setState({
                     fromPoint: null,
                     toPoint: null,
-                })
+                });
             }
         });
     }
-
 
     fetchDataSync = () => {
         for (const myData of this.props.data) {
@@ -163,7 +167,7 @@ class LatoMap extends React.Component {
     };
 
     componentDidUpdate() {
-        if (this.state.updateMap != this.props.updateMap) {
+        if (this.state.updateMap !== this.props.updateMap) {
             if (this.props.data.length > 0) {
                 this.vectorSource.clear();
                 this.routeVectorSource.clear();
@@ -184,19 +188,20 @@ class LatoMap extends React.Component {
         // usun popup
         this.map.removeOverlay(this.popup);
         this.routeVectorSource.clear();
-    }
+    };
 
     fetchRouteCoords = async () => {
         try {
-            const url = "http://h2096617.stratoserver.net:443/brouter?lonlats="
-            + this.state.fromPoint[0]
-            + ","
-            + this.state.fromPoint[1]
-            + "|"
-            + this.state.toPoint[0]
-            + ","
-            + this.state.toPoint[1]
-            + "&profile=car-fast&alternativeidx=0&format=geojson";
+            const url =
+                "http://h2096617.stratoserver.net:443/brouter?lonlats=" +
+                this.state.fromPoint[0] +
+                "," +
+                this.state.fromPoint[1] +
+                "|" +
+                this.state.toPoint[0] +
+                "," +
+                this.state.toPoint[1] +
+                "&profile=car-fast&alternativeidx=0&format=geojson";
             const res = await axios.get(url);
             return res;
         } catch (error) {
@@ -204,12 +209,10 @@ class LatoMap extends React.Component {
         }
     };
 
-
     getRoute = async () => {
         const result = await this.fetchRouteCoords();
         this.getRoutePolyline(result);
-    }
-
+    };
 
     getRoutePolyline = async (result) => {
         var pointList = [];
@@ -226,12 +229,11 @@ class LatoMap extends React.Component {
             stroke: new Stroke({
                 color: "blue",
                 width: 4,
-            })
+            }),
         });
         lineFeature.setStyle(lineStyle);
         this.routeVectorSource.addFeature(lineFeature);
-    }
-
+    };
 
     render() {
         return (
@@ -239,7 +241,12 @@ class LatoMap extends React.Component {
                 <div id="popup">
                     <div id="mytext">
                         <p>{this.state.myText}</p>
-                        <button onClick={this.routeCreationTrigger} type="button">Wyznacz trasę</button>
+                        <button
+                            onClick={this.routeCreationTrigger}
+                            type="button"
+                        >
+                            Wyznacz trasę
+                        </button>
                     </div>
                 </div>
             </div>

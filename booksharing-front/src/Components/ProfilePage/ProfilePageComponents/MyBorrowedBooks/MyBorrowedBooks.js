@@ -24,8 +24,8 @@ class MyBorrowedBooks extends React.Component {
                 },
                 {
                     Header: "bookId",
-                    accessor: "book.id",
-                    show: true,
+                    accessor: "id",
+                    show: false,
                 },
                 {
                     Header: "Tytuł",
@@ -53,7 +53,7 @@ class MyBorrowedBooks extends React.Component {
                 },
                 {
                     Header: "Data wypożyczenia",
-                    accessor: "checkInDate",
+                    accessor: "checkOutDate",
                     Cell: (row) => {
                         return this.timeFilter(row.value);
                     },
@@ -132,7 +132,9 @@ class MyBorrowedBooks extends React.Component {
         });
     }
 
-    async onClickRate() {
+    async onClickRate(event) {
+        event.preventDefault();
+
         axios
             .post(
                 "http://localhost:8889/api/rating/add",

@@ -30,13 +30,13 @@ class ProfileSettings extends React.Component {
     fetchCoords = async (city, street, houseNumber) => {
         try {
             const url =
-                "https://nominatim.openstreetmap.org/search?city="
-                + city
-                + "&street="
-                + houseNumber
-                + "%20"
-                + street
-                + "&format=json";
+                "https://nominatim.openstreetmap.org/search?city=" +
+                city +
+                "&street=" +
+                houseNumber +
+                "%20" +
+                street +
+                "&format=json";
             const res = await axios.get(url);
             return res;
         } catch (error) {
@@ -50,9 +50,11 @@ class ProfileSettings extends React.Component {
         const BASE_URL = "http://localhost:8889/api/sharepoint/";
         const EXPANDED_URL = BASE_URL + this.state.userName;
 
-
-        if (this.state.city != "" && this.state.street != "" && this.state.houseNumber != "") {
-
+        if (
+            this.state.city !== "" &&
+            this.state.street !== "" &&
+            this.state.houseNumber !== ""
+        ) {
             const result = await this.fetchCoords(
                 this.state.city,
                 this.state.street,
@@ -62,9 +64,7 @@ class ProfileSettings extends React.Component {
             this.setState({
                 lon: result.data[0].lon,
                 lat: result.data[0].lat,
-
             });
-
         }
 
         axios

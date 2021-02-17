@@ -63,6 +63,10 @@ class Login extends React.Component {
                 .then(() => this.setState({ isLogged: true }))
                 .then(() => window.location.reload())
                 .catch(() => {
+                    this.setState({
+                        usernameErrorCheck: true,
+                        passwordErrorCheck: true,
+                    });
                     // window.alert("Podano złe dane");
                 });
         }
