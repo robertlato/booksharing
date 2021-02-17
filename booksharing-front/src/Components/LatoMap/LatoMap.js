@@ -27,7 +27,8 @@ class LatoMap extends React.Component {
         this.state = {
             books: this.props.data,
             updateMap: false,
-            myText: "test",
+            sharepointInfo: "test",
+            sharepointBooks: [],
             createRoute: false,
             toPoint: null,
             fromPoint: null,
@@ -56,29 +57,40 @@ class LatoMap extends React.Component {
     }
 
     addMarker(lon, lat, city, street, houseNumber, email, title, borrowed) {
-        var iconFeature = new Feature({
-            geometry: new Point(olProj.fromLonLat([lon, lat])),
-            // geometry: new Point(olProj.transform([18, 54], 'EPSG:4326','EPSG:3857')),
-            name: "Sharepoint",
-            city: city,
-            street: street,
-            houseNumber: houseNumber,
-            email: email,
-            title: title,
-            borrowed: borrowed,
-        });
 
-        var iconStyle = new Style({
-            image: new Icon({
-                scale: 0.5,
-                anchor: [0.5, 46],
-                anchorXUnits: "fraction",
-                anchorYUnits: "pixels",
-                src: mybook,
-            }),
-        });
-        iconFeature.setStyle(iconStyle);
-        this.vectorSource.addFeature(iconFeature);
+        let myCoords = olProj.fromLonLat([lon, lat]);
+
+        if (this.vectorSource.getFeaturesAtCoordinate(myCoords).length > 0) {
+            let myFeature = this.vectorSource.getFeaturesAtCoordinate(myCoords)[0];
+            myFeature.get("borrowed").push(borrowed);
+            myFeature.get("title").push(title);
+        } else {
+
+            var iconFeature = new Feature({
+                geometry: new Point(olProj.fromLonLat([lon, lat])),
+                // geometry: new Point(olProj.transform([18, 54], 'EPSG:4326','EPSG:3857')),
+                name: "Sharepoint",
+                city: city,
+                street: street,
+                houseNumber: houseNumber,
+                email: email,
+                title: [title],
+                borrowed: [borrowed],
+            });
+
+            var iconStyle = new Style({
+                image: new Icon({
+                    scale: 0.5,
+                    anchor: [0.5, 46],
+                    anchorXUnits: "fraction",
+                    anchorYUnits: "pixels",
+                    src: mybook,
+                }),
+            });
+            iconFeature.setStyle(iconStyle);
+            this.vectorSource.addFeature(iconFeature);
+        }
+
     }
 
     componentDidMount() {
@@ -101,23 +113,36 @@ class LatoMap extends React.Component {
                     ),
                 });
 
-                let isBorrowed = myFeatures[0].get("borrowed")
-                    ? "wypożyczona"
-                    : "dostępna";
-                let query =
+                this.setState({ sharepointBooks: [] });
+                let sharepointInfoQuery =
                     myFeatures[0].get("city") +
                     ", " +
                     myFeatures[0].get("street") +
                     ", " +
                     myFeatures[0].get("houseNumber") +
                     ", " +
-                    myFeatures[0].get("email") +
-                    ", " +
-                    myFeatures[0].get("title") +
-                    ", książka " +
-                    isBorrowed;
+                    myFeatures[0].get("email");
 
-                this.setState({ myText: query });
+                var books = "";
+
+                for (let i = 0; i < myFeatures[0].get("borrowed").length; i++) {
+                    books = myFeatures[0].get("title")[i]
+                        + ", książka "
+                        + (myFeatures[0].get("borrowed")[i] ? "wypożyczona" : "dostępna");
+
+                    // this.setState(state => {
+                    //     const sharepointBooks = state.sharepointBooks.concat(books);
+
+                    //     return {sharepointBooks};
+                    // });
+                    this.setState(state => ({
+                        sharepointBooks: [...state.sharepointBooks, books]
+                    }));
+
+                    books = "";
+                }
+
+                this.setState({ sharepointInfo: sharepointInfoQuery });
                 this.popup.setPosition(e.coordinate);
                 this.map.addOverlay(this.popup);
             } else if (this.map.getOverlays && !this.state.createRoute) {
@@ -163,6 +188,7 @@ class LatoMap extends React.Component {
                 myData.title,
                 myData.borrowed
             );
+            this.map.renderSync();
         }
     };
 
@@ -192,16 +218,15 @@ class LatoMap extends React.Component {
 
     fetchRouteCoords = async () => {
         try {
-            const url =
-                "http://h2096617.stratoserver.net:443/brouter?lonlats=" +
-                this.state.fromPoint[0] +
-                "," +
-                this.state.fromPoint[1] +
-                "|" +
-                this.state.toPoint[0] +
-                "," +
-                this.state.toPoint[1] +
-                "&profile=car-fast&alternativeidx=0&format=geojson";
+            const url = "http://h2096617.stratoserver.net:443/brouter?lonlats="
+                + this.state.fromPoint[0]
+                + ","
+                + this.state.fromPoint[1]
+                + "|"
+                + this.state.toPoint[0]
+                + ","
+                + this.state.toPoint[1]
+                + "&profile=car-fast&alternativeidx=0&format=geojson";
             const res = await axios.get(url);
             return res;
         } catch (error) {
@@ -239,14 +264,18 @@ class LatoMap extends React.Component {
         return (
             <div id="map" class="map">
                 <div id="popup">
-                    <div id="mytext">
-                        <p>{this.state.myText}</p>
-                        <button
-                            onClick={this.routeCreationTrigger}
-                            type="button"
-                        >
-                            Wyznacz trasę
-                        </button>
+                    <div id="sharepointInfo">
+                        <p>{this.state.sharepointInfo}</p>
+                        <div id="books">
+                            <ul>
+                                {this.state.sharepointBooks.map(book => (
+                                    <li key={book}>
+                                        {book}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <button onClick={this.routeCreationTrigger} type="button">Wyznacz trasę</button>
                     </div>
                 </div>
             </div>
