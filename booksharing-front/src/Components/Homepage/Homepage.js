@@ -64,24 +64,51 @@ class Homepage extends React.Component {
         const WANTED_ITEM = this.state.wantedItem;
         const BASE_URL = this.apiUrlSwitch(SEARCH_BY);
         const EXPANDED_URL = BASE_URL + SEARCH_BY + ":*" + WANTED_ITEM + "*";
+        var loggedUsed = localStorage.getItem("userToken");
 
-        axios
-            .get(EXPANDED_URL)
+        if (loggedUsed == null) {
+            axios
+                .get(EXPANDED_URL)
 
-            .then((res) => {
-                console.log(res);
-                if (res.status === 200) {
-                    console.log("działa wyszukiwarka");
-                    console.log(res.data);
-                    this.setState({ books: res.data });
+                .then((res) => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        console.log("działa wyszukiwarka");
+                        console.log(res.data);
+                        this.setState({ books: res.data });
 
-                    this.setState({ updateMap: !this.state.updateMap });
-                }
-            })
-            .catch((error) => {
-                console.log("NIE DZIAŁA WYSZUKIWARKA");
-                console.log(error);
-            });
+                        this.setState({ updateMap: !this.state.updateMap });
+                    }
+                })
+                .catch((error) => {
+                    console.log("NIE DZIAŁA WYSZUKIWARKA");
+                    console.log(error);
+                });
+        }
+        else {
+            axios
+                .get(EXPANDED_URL, {
+                    headers: {
+                        authorization: "Basic " + localStorage.getItem("userToken"),
+                    },
+                })
+
+                .then((res) => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        console.log("działa wyszukiwarka");
+                        console.log(res.data);
+                        this.setState({ books: res.data });
+
+                        this.setState({ updateMap: !this.state.updateMap });
+                    }
+                })
+                .catch((error) => {
+                    console.log("NIE DZIAŁA WYSZUKIWARKA");
+                    console.log(error);
+                });
+        }
+
     }
 
     render() {

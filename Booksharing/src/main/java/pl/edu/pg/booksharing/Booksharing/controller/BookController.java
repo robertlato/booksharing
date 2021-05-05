@@ -90,7 +90,7 @@ public class BookController {
     // search engine for books
     @GetMapping(path = "/api")
     public ResponseEntity<List<BookSearchDto>> searchForBooks(@SearchSpec Specification<Book> specs) {
-        List<Book> books = bookRepository.findAll(Specification.where(specs));
+        List<Book> books = bookService.searchEngineAll(Specification.where(specs));
 
         List<BookSearchDto> bookSearchDtos = books.stream().map(book -> bookService.convertSearchToDto(book)).collect(Collectors.toList());
 
@@ -100,17 +100,7 @@ public class BookController {
     // search engine for books
     @GetMapping(path = "/api/books/authors")
     public ResponseEntity<List<BookSearchDto>> searchForBooksByAuthors(@SearchSpec Specification<Author> specs) {
-        List<Author> authors = authorRepository.findAll(Specification.where(specs));
-        List<Book> books = new ArrayList<>();
-        for (Author author:
-             authors) {
-            List<Book> booksAuthor = author.getBooks();
-            for (Book bookList:
-                 booksAuthor) {
-                books.add(bookList);
-            }
-        }
-
+        List<Book> books = bookService.searchEngineByAuthor(Specification.where(specs));
         List<BookSearchDto> bookSearchDtos = books.stream().map(book -> bookService.convertSearchToDto(book)).collect(Collectors.toList());
 
         return new ResponseEntity<>(bookSearchDtos, HttpStatus.OK);

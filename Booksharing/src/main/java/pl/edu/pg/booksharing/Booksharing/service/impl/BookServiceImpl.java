@@ -2,7 +2,10 @@ package pl.edu.pg.booksharing.Booksharing.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import pl.edu.pg.booksharing.Booksharing.component.AuthenticationFacadeImpl;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.*;
@@ -25,18 +28,20 @@ public class BookServiceImpl implements BookService {
     private PublisherRepository publisherRepository;
     private AuthorRepository authorRepository;
     private SharePointRepository sharePointRepository;
+    private AuthenticationFacadeImpl authenticationFacade;
     @Autowired
     ModelMapper modelMapper;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository, UserRepository userRepository,
                            PublisherRepository publisherRepository, AuthorRepository authorRepository,
-                           SharePointRepository sharePointRepository) {
+                           SharePointRepository sharePointRepository, AuthenticationFacadeImpl authenticationFacade) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.sharePointRepository = sharePointRepository;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @Override
@@ -49,6 +54,58 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Book> searchEngineAll(Specification<Book> specs) {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
+        List<Book> allBooks = bookRepository.findAll(Specification.where(specs));
+        List<Book> searchedBooks = new ArrayList<>();
+
+        if (user == null) {
+            return allBooks;
+        } else {
+            for (Book book:
+                    allBooks) {
+
+                if (book.getSharePoint().getUser().getId() == user.getId()) {
+
+                } else {
+                    searchedBooks.add(book);
+                }
+
+            }
+        }
+
+        return searchedBooks;
+    }
+
+    @Override
+    public List<Book> searchEngineByAuthor(Specification<Author> specs) {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
+        List<Author> authors = authorRepository.findAll(Specification.where(specs));
+        List<Book> books = new ArrayList<>();
+        for (Author author:
+                authors) {
+            List<Book> booksAuthor = author.getBooks();
+            for (Book bookList:
+                    booksAuthor) {
+                if (user == null) {
+                    books.add(bookList);
+                } else {
+                    if (bookList.getSharePoint().getUser().getId() == user.getId()) {
+
+                    } else {
+                        books.add(bookList);
+                    }
+                }
+
+            }
+        }
+        return books;
+
     }
 
     @Override

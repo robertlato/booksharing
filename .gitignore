@@ -6,3 +6,5 @@ booksharing-front/.eslintcache
 ### DB ###
 booksharingDB.mv.db
 booksharingDB.trace.db
+.idea/
+

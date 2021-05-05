@@ -1,7 +1,9 @@
 package pl.edu.pg.booksharing.Booksharing.service;
 
+import org.springframework.data.jpa.domain.Specification;
 import pl.edu.pg.booksharing.Booksharing.exception.BookAlreadyExistsException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
+import pl.edu.pg.booksharing.Booksharing.model.Author;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo.BookDetailedInfoDto;
@@ -14,6 +16,10 @@ public interface BookService {
     void save(Book book);
 
     List<Book> findAll();
+
+    List<Book> searchEngineAll(Specification<Book> specs);
+
+    List<Book> searchEngineByAuthor(Specification<Author> specs);
 
     Book findById(long id) throws ResourceNotFoundException;
 
