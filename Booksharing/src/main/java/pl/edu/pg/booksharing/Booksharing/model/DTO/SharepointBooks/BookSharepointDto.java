@@ -3,6 +3,7 @@ package pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks;
 import pl.edu.pg.booksharing.Booksharing.model.Publisher;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,15 @@ public class BookSharepointDto {
 
     private boolean isBorrowed;
 
+    private String userWhoBorrowed;
+
+    private java.sql.Timestamp borrowingDate;
+
     public BookSharepointDto() {
     }
 
     public BookSharepointDto(Long id, String title, List<AuthorSharepointDto> authors, PublisherSharepointDto publisher,
-                             String isbn, Date releaseDate, boolean isBorrowed) {
+                             String isbn, Date releaseDate, boolean isBorrowed, String userWhoBorrowed, Timestamp borrowingDate) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -34,6 +39,8 @@ public class BookSharepointDto {
         this.isbn = isbn;
         this.releaseDate = releaseDate;
         this.isBorrowed = isBorrowed;
+        this.userWhoBorrowed = userWhoBorrowed;
+        this.borrowingDate = borrowingDate;
     }
 
     public Long getId() {
@@ -90,5 +97,21 @@ public class BookSharepointDto {
 
     public void setBorrowed(boolean borrowed) {
         isBorrowed = borrowed;
+    }
+
+    public String getUserWhoBorrowed() {
+        return userWhoBorrowed;
+    }
+
+    public void setUserWhoBorrowed(String userWhoBorrowed) {
+        this.userWhoBorrowed = userWhoBorrowed;
+    }
+
+    public Timestamp getBorrowingDate() {
+        return borrowingDate;
+    }
+
+    public void setBorrowingDate(Timestamp borrowingDate) {
+        this.borrowingDate = borrowingDate;
     }
 }

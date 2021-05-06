@@ -13,10 +13,15 @@ import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.AuthorInfoForBookDt
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo.BookDetailedInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.AuthorSharepointDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepointDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.PublisherSharepointDto;
 import pl.edu.pg.booksharing.Booksharing.repository.*;
 import pl.edu.pg.booksharing.Booksharing.service.BookService;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,6 +154,28 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public String whoBorrowed(Book book) throws ResourceNotFoundException {
+        List<Borrowing> borrowings = book.getBorrowings();
+
+        if (borrowings.size() == 0) {
+            return "";
+        } else {
+            return borrowings.get(borrowings.size() - 1).getUser().getEmail();
+        }
+    }
+
+    @Override
+    public Timestamp borrowingDate(Book book) throws ResourceNotFoundException {
+        List<Borrowing> borrowings = book.getBorrowings();
+
+        if (borrowings.size() == 0) {
+            return null;
+        } else {
+            return borrowings.get(borrowings.size() - 1).getCheckOutDate();
+        }
+    }
+
+    @Override
     public Book convertToEntity(BookBasicInfoDto bookBasicInfoDto) {
 //        Book book = modelMapper.map(bookBasicInfoDto, Book.class);
         User user = userRepository.findByEmail(bookBasicInfoDto.getSharePoint().getUser().getEmail());
@@ -204,6 +231,38 @@ public class BookServiceImpl implements BookService {
         BookSearchDto bookSearchDto = modelMapper.map(book, BookSearchDto.class);
 
         return bookSearchDto;
+    }
+
+    @Override
+    public BookSharepointDto convertToSharepointDto(Book book) throws ResourceNotFoundException {
+        String whoBorrowed = whoBorrowed(book);
+
+        List<Author> bookAuthors = book.getAuthors();
+        List<AuthorSharepointDto> authors = new ArrayList<>();
+        for (Author author:
+             bookAuthors) {
+            AuthorSharepointDto authorDto = modelMapper.map(author, AuthorSharepointDto.class);
+            authors.add(authorDto);
+        }
+
+        PublisherSharepointDto publisherSharepointDto = modelMapper.map(book.getPublisher(),
+                                                                        PublisherSharepointDto.class);
+
+        Timestamp date = borrowingDate(book);
+
+        BookSharepointDto bookSharepointDto = new BookSharepointDto(
+                book.getId(),
+                book.getTitle(),
+                authors,
+                publisherSharepointDto,
+                book.getIsbn(),
+                book.getReleaseDate(),
+                book.isBorrowed(),
+                whoBorrowed,
+                date
+        );
+
+        return bookSharepointDto;
     }
 
     @Transactional

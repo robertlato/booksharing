@@ -83,8 +83,13 @@ public class BookController {
     @GetMapping(path = "/api/sharepoint/books/{email}")
     public List<BookSharepointDto> getBooksFromSharepoint(@PathVariable String email) throws ResourceNotFoundException {
       List<Book> books = bookService.findByOwnerEmail(email);
+      List<BookSharepointDto> bookSharepointDtoList = new ArrayList<>();
+        for (Book book:
+             books) {
+            bookSharepointDtoList.add(bookService.convertToSharepointDto(book));
+        }
 
-        return books.stream().map(book -> modelMapper.map(book, BookSharepointDto.class)).collect(Collectors.toList());
+        return bookSharepointDtoList;
     }
 
     // search engine for books

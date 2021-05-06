@@ -8,6 +8,7 @@ import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.BookBasicInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.DetailedInfo.BookDetailedInfoDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.BookSearchDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.BookSharepointDto;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ public interface BookService {
 
     List<Book> findByOwnerEmail(String email) throws ResourceNotFoundException;
 
+    String whoBorrowed(Book book) throws ResourceNotFoundException;
+
+    java.sql.Timestamp borrowingDate(Book book) throws ResourceNotFoundException;
+
     BookBasicInfoDto convertToDto(Book book);
 
     BookDetailedInfoDto convertToDetailedDto(Book book);
@@ -34,6 +39,8 @@ public interface BookService {
     BookSearchDto convertSearchToDto(Book book);
 
     Book convertToEntity(BookBasicInfoDto bookBasicInfoDto);
+
+    BookSharepointDto convertToSharepointDto(Book book) throws ResourceNotFoundException;
 
     void deleteBookById(long id);
 }
