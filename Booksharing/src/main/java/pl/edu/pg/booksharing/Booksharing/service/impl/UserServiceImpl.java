@@ -119,5 +119,54 @@ public class UserServiceImpl implements UserService {
         }
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
+
+    @Override
+    public void delete() {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
+
+        if (user != null) {
+            boolean userIsAllowedToDeleteAccount = true;
+            StringBuilder feedback = new StringBuilder();
+            var userBorrowings = user.getBorrowings();
+            for (var userBorrowing :
+                    userBorrowings) {
+                if (userBorrowing.getCheckInDate() == null) {
+                    userIsAllowedToDeleteAccount = false;
+                    feedback.append("Nie zwróciłeś wszystkich wypożyczonych ksiażek. ");
+                    break;
+                }
+            }
+
+            if (userIsAllowedToDeleteAccount) {
+                var userSharePointBorrowings = user.getSharePoints().get(0).getBorrowings();
+
+                for (var userSharePointBorrowing :
+                        userSharePointBorrowings) {
+                    if (userSharePointBorrowing.getCheckInDate() == null) {
+                        userIsAllowedToDeleteAccount = false;
+                        feedback.append("Nie odzyskałeś jeszcze wszystkich wypożyczonych książek. ");
+                        break;
+                    }
+                }
+            }
+
+            if (userIsAllowedToDeleteAccount) {
+
+                user.setFirstName("null");
+                user.setLastName("null");
+                user.setPhoneNumber("000000000");
+                user.setEmail(null);
+                user.setPassword("password");
+                userRepository.save(user);
+
+                throw new ResponseStatusException(HttpStatus.OK);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, feedback.toString());
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nie znaleziono użytkownika");
+        }
+    }
 }
 

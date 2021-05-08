@@ -17,5 +17,7 @@ public interface UserService {
     UserSharepointDto convertToDto(User user);
 
     void update(String ownerEmail, User user);
+
+    void delete();
 }
 

@@ -64,9 +64,9 @@ class Homepage extends React.Component {
         const WANTED_ITEM = this.state.wantedItem;
         const BASE_URL = this.apiUrlSwitch(SEARCH_BY);
         const EXPANDED_URL = BASE_URL + SEARCH_BY + ":*" + WANTED_ITEM + "*";
-        var loggedUsed = localStorage.getItem("userToken");
+        var loggedUser = localStorage.getItem("userToken");
 
-        if (loggedUsed == null) {
+        if (loggedUser == null) {
             axios
                 .get(EXPANDED_URL)
 

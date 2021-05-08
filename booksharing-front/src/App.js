@@ -52,6 +52,11 @@ class App extends React.Component {
                             exact
                             component={ProfilePage}
                         />
+                            <AuthenticatedRoute
+                            path="/deleteaccount"
+                            exact
+                            component={ProfilePage}
+                        />
                     </Switch>
                 </div>
             </Router>

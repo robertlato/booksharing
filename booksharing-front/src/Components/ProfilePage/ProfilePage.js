@@ -6,6 +6,7 @@ import MyBorrowedBooks from "./ProfilePageComponents/MyBorrowedBooks/MyBorrowedB
 import AddBook from "./ProfilePageComponents/AddBook/AddBook";
 import MyLibrary from "./ProfilePageComponents/MyLibrary/MyLibrary";
 import ProfileSettings from "./ProfilePageComponents/ProfileSettings/ProfileSettings";
+import DeleteAccount from "./ProfilePageComponents/DeleteAccount/DeleteAccount";
 
 class ProfilePage extends React.Component {
     render() {
@@ -28,6 +29,8 @@ class ProfilePage extends React.Component {
                     exact
                     component={ProfileSettings}
                 />
+                <AuthenticatedRoute path="/deleteaccount" exact component={DeleteAccount} />
+
             </div>
         );
     }
