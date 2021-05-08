@@ -18,6 +18,8 @@ import Overlay from "ol/Overlay";
 import ReactDOM from "react-dom";
 import LineString from "ol/geom/LineString";
 import Stroke from "ol/style/Stroke";
+import AuthenticationService from "../../service/AuthenticationService";
+
 
 class LatoMap extends React.Component {
     constructor(props) {
@@ -54,9 +56,11 @@ class LatoMap extends React.Component {
         });
         this.popup = new Overlay({});
         this.addMarker = this.addMarker.bind(this);
+        this.onClickBorrowBook = this.onClickBorrowBook.bind(this);
+
     }
 
-    addMarker(lon, lat, city, street, houseNumber, email, title, borrowed) {
+    addMarker(lon, lat, city, street, houseNumber, email, title, borrowed, sharePointId, bookId) {
 
         let myCoords = olProj.fromLonLat([lon, lat]);
 
@@ -64,18 +68,21 @@ class LatoMap extends React.Component {
             let myFeature = this.vectorSource.getFeaturesAtCoordinate(myCoords)[0];
             myFeature.get("borrowed").push(borrowed);
             myFeature.get("title").push(title);
+            myFeature.get("bookId").push(bookId);
         } else {
 
             var iconFeature = new Feature({
                 geometry: new Point(olProj.fromLonLat([lon, lat])),
                 // geometry: new Point(olProj.transform([18, 54], 'EPSG:4326','EPSG:3857')),
                 name: "Sharepoint",
+                sharePointId: sharePointId,
                 city: city,
                 street: street,
                 houseNumber: houseNumber,
                 email: email,
                 title: [title],
                 borrowed: [borrowed],
+                bookId: [bookId],
             });
 
             var iconStyle = new Style({
@@ -123,12 +130,20 @@ class LatoMap extends React.Component {
                     ", " +
                     myFeatures[0].get("email");
 
-                var books = "";
+
+                var books = {
+                    title: [],
+                    borrowed: [],
+                    sharePointId: [],
+                    bookId: []
+                };
 
                 for (let i = 0; i < myFeatures[0].get("borrowed").length; i++) {
-                    books = myFeatures[0].get("title")[i]
-                        + ", książka "
-                        + (myFeatures[0].get("borrowed")[i] ? "wypożyczona" : "dostępna");
+
+                    books.title = myFeatures[0].get("title")[i];
+                    books.borrowed = myFeatures[0].get("borrowed")[i];
+                    books.sharePointId = myFeatures[0].get("sharePointId");
+                    books.bookId = myFeatures[0].get("bookId")[i];
 
                     // this.setState(state => {
                     //     const sharepointBooks = state.sharepointBooks.concat(books);
@@ -139,7 +154,7 @@ class LatoMap extends React.Component {
                         sharepointBooks: [...state.sharepointBooks, books]
                     }));
 
-                    books = "";
+                    books = [];
                 }
 
                 this.setState({ sharepointInfo: sharepointInfoQuery });
@@ -186,7 +201,9 @@ class LatoMap extends React.Component {
                 myData.sharePoint.address.houseNumber,
                 myData.sharePoint.user.email,
                 myData.title,
-                myData.borrowed
+                myData.borrowed,
+                myData.sharePoint.id,
+                myData.id
             );
             this.map.renderSync();
         }
@@ -260,6 +277,43 @@ class LatoMap extends React.Component {
         this.routeVectorSource.addFeature(lineFeature);
     };
 
+    async onClickBorrowBook(bookId, sharePointId) {
+        console.log("inside onClickBorrowBook");
+        if (AuthenticationService.isUserLoggedIn() === false) {
+            window.alert("Musisz się zalogować!");
+        } else {
+            axios
+                .post(
+                    "http://localhost:8889/api/borrowing",
+                    {
+                        book: {
+                            id: bookId,
+                        },
+                        sharePoint: {
+                            id: sharePointId,
+                        },
+                    },
+                    {
+                        headers: {
+                            authorization:
+                                "Basic " + localStorage.getItem("userToken"),
+                        },
+                    }
+                )
+                .then((res) => {
+                    if (res.status === 200) {
+                        window.alert("Wypożyczono!");
+                        console.log("Wypożyczono!");
+                        window.location.reload();
+                    }
+                })
+                .catch((error) => {
+                    console.log("NIE WYPOŻYCZONO");
+                    console.log(error);
+                });
+        }
+    };
+
     render() {
         return (
             <div id="map" class="map">
@@ -270,7 +324,10 @@ class LatoMap extends React.Component {
                             <ul>
                                 {this.state.sharepointBooks.map(book => (
                                     <li key={book}>
-                                        {book}
+                                        {book.title}  
+                                        {book.borrowed ? (<p style={{display: "inline-block"}}>, Wypożyczona</p>)
+                                        : (<button onClick={() => this.onClickBorrowBook(book.bookId, book.sharePointId)} type="button">Wypożycz</button>)
+                                        }
                                     </li>
                                 ))}
                             </ul>
