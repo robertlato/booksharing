@@ -21,6 +21,10 @@ public interface UserService {
 
     void update(String ownerEmail, User user);
 
+
     void updatePassword(String password);
+
+    void delete();
+
 }
 

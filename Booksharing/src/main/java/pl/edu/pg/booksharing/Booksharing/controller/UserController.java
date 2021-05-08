@@ -52,5 +52,10 @@ public class UserController {
     public void updateUsersPassword(@RequestBody String password) {
         userService.updatePassword(password);
     }
+
+    @DeleteMapping(path = "/api/user")
+    public void deleteUser() {
+        userService.delete();
+    }
 }
 

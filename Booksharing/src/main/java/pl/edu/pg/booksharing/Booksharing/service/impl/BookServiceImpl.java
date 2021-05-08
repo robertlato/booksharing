@@ -69,17 +69,16 @@ public class BookServiceImpl implements BookService {
         List<Book> searchedBooks = new ArrayList<>();
 
         if (user == null) {
-            return allBooks;
+            for (var book:
+                 allBooks) {
+                if (book.getSharePoint().getUser().getEmail() != null) searchedBooks.add(book);
+            }
         } else {
             for (Book book:
                     allBooks) {
-
-                if (book.getSharePoint().getUser().getId() == user.getId()) {
-
-                } else {
-                    searchedBooks.add(book);
+                if (!book.getSharePoint().getUser().getId().equals(user.getId())
+                        && book.getSharePoint().getUser().getEmail() != null) {searchedBooks.add(book);
                 }
-
             }
         }
 
@@ -98,12 +97,10 @@ public class BookServiceImpl implements BookService {
             for (Book bookList:
                     booksAuthor) {
                 if (user == null) {
-                    books.add(bookList);
+                    if (bookList.getSharePoint().getUser().getEmail() != null) books.add(bookList);
                 } else {
-                    if (bookList.getSharePoint().getUser().getId() == user.getId()) {
-
-                    } else {
-                        books.add(bookList);
+                    if (!bookList.getSharePoint().getUser().getId().equals(user.getId())
+                            && bookList.getSharePoint().getUser().getEmail() != null) {books.add(bookList);
                     }
                 }
 

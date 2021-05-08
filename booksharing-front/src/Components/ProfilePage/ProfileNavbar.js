@@ -34,6 +34,11 @@ class ProfileNavbar extends React.Component {
                                 Ustawienia konta
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/deleteaccount" activeClassName="active">
+                                Usuń konto
+                            </NavLink>
+                        </li>
                     </ul>
                 </div>
             </nav>

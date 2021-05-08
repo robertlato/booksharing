@@ -31,7 +31,7 @@ public class User {
     @Size(min = 9, max = 15)
     private String phoneNumber;
 
-    @NotBlank
+//    @NotBlank
     @Email(regexp=".+@.+\\..+")
     private String email;
 
