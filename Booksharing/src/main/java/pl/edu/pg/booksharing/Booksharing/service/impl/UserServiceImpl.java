@@ -12,6 +12,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Address;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.UserSharepointDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.UsersAccountSettings.UserSettingsDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
@@ -119,5 +120,22 @@ public class UserServiceImpl implements UserService {
         }
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
+
+    @Override
+    public UserSettingsDto getUserForSettings() {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
+        UserSettingsDto userSettingsDto = modelMapper.map(user, UserSettingsDto.class);
+
+        return userSettingsDto;
+    }
+
+    @Override
+    public void updatePassword(String password) {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName());
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+    }
+
 }
 

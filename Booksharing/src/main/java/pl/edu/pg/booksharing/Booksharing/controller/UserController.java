@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Address;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.UsersAccountSettings.UserSettingsDto;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.service.UserService;
 
@@ -37,9 +38,19 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
-    @PatchMapping(path = "/api/user/{ownerEmail}")
+    @GetMapping(path = "/api/user/settingsdata")
+    public UserSettingsDto getUserDataForSettings() {
+        return userService.getUserForSettings();
+    }
+
+    @PatchMapping(path = "/api/user/update/{ownerEmail}")
     public void updateUser(@PathVariable String ownerEmail, @RequestBody User user) {
         userService.update(ownerEmail, user);
+    }
+
+    @PatchMapping(path = "/api/user/update/password")
+    public void updateUsersPassword(@RequestBody String password) {
+        userService.updatePassword(password);
     }
 }
 

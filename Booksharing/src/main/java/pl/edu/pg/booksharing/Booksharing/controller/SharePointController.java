@@ -3,7 +3,9 @@ package pl.edu.pg.booksharing.Booksharing.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pg.booksharing.Booksharing.model.Address;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.UsersAccountSettings.AddressSettingsDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
+import pl.edu.pg.booksharing.Booksharing.service.AddressService;
 import pl.edu.pg.booksharing.Booksharing.service.SharePointService;
 
 import java.util.List;
@@ -13,10 +15,12 @@ import java.util.List;
 public class SharePointController {
 
     private SharePointService sharePointService;
+    private AddressService addressService;
 
     @Autowired
-    public SharePointController(SharePointService sharePointService) {
+    public SharePointController(SharePointService sharePointService, AddressService addressService) {
         this.sharePointService = sharePointService;
+        this.addressService = addressService;
     }
 
     @GetMapping(path = "/api/sharepoints")
@@ -34,6 +38,11 @@ public class SharePointController {
     @PatchMapping(path = "/api/sharepoint/{ownerEmail}")
     public void updateSharepoint(@PathVariable String ownerEmail, @RequestBody Address address) {
         sharePointService.update(ownerEmail, address);
+    }
+
+    @GetMapping(path = "/api/sharepoint/user/address")
+    public AddressSettingsDto getAddressSettings() {
+        return addressService.getAddressForSettings();
     }
 
     @GetMapping(path = "/api/sharepoint/email/{ownerEmail}")
