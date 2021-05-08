@@ -59,6 +59,17 @@ class MyBorrowedBooks extends React.Component {
                     },
                 },
                 {
+                    Header: "Data oddania",
+                    accessor: "checkInDate",
+                    Cell: (row) => {
+                        return row.value == null ? "Nie oddano" : this.timeFilter(row.value);
+                    },
+                },
+                {
+                    Header: "Pożyczono od",
+                    accessor: "book.sharepoint.user.email",
+                },
+                {
                     Header: "Oceń",
                     Cell: ({ row, original }) => {
                         return (

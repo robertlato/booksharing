@@ -3,6 +3,7 @@ package pl.edu.pg.booksharing.Booksharing.model.DTO.BorrowingInfo;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.AuthorInfoForBookDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.PublisherInfoForBookDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.BasicInfo.SharePointEmailDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.SearchBook.SharePointSearchDto;
 import pl.edu.pg.booksharing.Booksharing.model.Genre;
 
 import java.sql.Date;
@@ -18,6 +19,8 @@ public class BorrowedBookInfoDto {
     private List<AuthorInfoForBookDto> authors = new ArrayList<>();
 
     private PublisherInfoForBookDto publisher;
+
+    private SharePointSearchDto sharepoint;
 
 
 
@@ -67,5 +70,12 @@ public class BorrowedBookInfoDto {
         this.authors = authors;
     }
 
+    public SharePointSearchDto getSharepoint() {
+        return sharepoint;
+    }
+
+    public void setSharepoint(SharePointSearchDto sharepoint) {
+        this.sharepoint = sharepoint;
+    }
 
 }
