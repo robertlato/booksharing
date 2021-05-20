@@ -3,6 +3,7 @@ package pl.edu.pg.booksharing.Booksharing.service;
 
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.Password.UserPasswordDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.UserSharepointDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.UsersAccountSettings.UserSettingsDto;
 import pl.edu.pg.booksharing.Booksharing.model.User;
@@ -22,7 +23,7 @@ public interface UserService {
     void update(String ownerEmail, User user);
 
 
-    void updatePassword(String password);
+    void updatePassword(UserPasswordDto userPasswordDto);
 
     void delete();
 

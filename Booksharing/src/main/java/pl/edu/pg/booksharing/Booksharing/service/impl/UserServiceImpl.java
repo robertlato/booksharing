@@ -11,6 +11,7 @@ import pl.edu.pg.booksharing.Booksharing.component.AuthenticationFacadeImpl;
 import pl.edu.pg.booksharing.Booksharing.exception.EmailAlreadyTakenException;
 import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Address;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.Password.UserPasswordDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.SharepointBooks.UserSharepointDto;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.UsersAccountSettings.UserSettingsDto;
 import pl.edu.pg.booksharing.Booksharing.model.SharePoint;
@@ -131,10 +132,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String password) {
+    public void updatePassword(UserPasswordDto userPasswordDto) {
         Authentication authentication = authenticationFacade.getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());
-        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setPassword(bCryptPasswordEncoder.encode(userPasswordDto.getPassword()));
+        userRepository.save(user);
     }
 
     public void delete() {
