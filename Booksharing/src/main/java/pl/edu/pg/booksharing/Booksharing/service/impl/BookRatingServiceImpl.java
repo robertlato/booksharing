@@ -1,5 +1,6 @@
 package pl.edu.pg.booksharing.Booksharing.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import pl.edu.pg.booksharing.Booksharing.exception.ResourceNotFoundException;
 import pl.edu.pg.booksharing.Booksharing.model.Book;
 import pl.edu.pg.booksharing.Booksharing.model.BookRating;
 import pl.edu.pg.booksharing.Booksharing.model.DTO.ReviewAndRating.BookRatingDto;
+import pl.edu.pg.booksharing.Booksharing.model.DTO.ReviewAndRating.BookRnRDto;
 import pl.edu.pg.booksharing.Booksharing.model.User;
 import pl.edu.pg.booksharing.Booksharing.repository.BookRatingRepository;
 import pl.edu.pg.booksharing.Booksharing.repository.UserRepository;
@@ -23,6 +25,7 @@ public class BookRatingServiceImpl implements BookRatingService {
     private AuthenticationFacadeImpl authenticationFacade;
     private UserRepository userRepository;
     private BookService bookService;
+    ModelMapper modelMapper;
 
     @Autowired
     public BookRatingServiceImpl(BookRatingRepository bookRatingRepository,
@@ -88,5 +91,23 @@ public class BookRatingServiceImpl implements BookRatingService {
         avg = avg/100;
 
         return avg;
+    }
+
+    @Override
+    public BookRatingDto convertToDto(BookRating bookRating) {
+        BookRatingDto bookRatingDto = new BookRatingDto();
+        bookRatingDto.setRating(bookRating.getRating());
+        Book book = bookRating.getBook();
+        BookRnRDto bookRnRDto = new BookRnRDto();
+        bookRnRDto.setId(book.getId());
+        bookRatingDto.setBook(bookRnRDto);
+        return bookRatingDto;
+    }
+
+    @Override
+    public List<BookRating> getBookRatings(long id) throws ResourceNotFoundException {
+        Book book = bookService.findById(id);
+
+        return book.getBookRatings();
     }
 }
