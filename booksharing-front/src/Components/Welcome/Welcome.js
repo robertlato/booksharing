@@ -5,7 +5,7 @@ class Welcome extends React.Component {
     render() {
         return (
             <div>
-                <h1>Rejestracja przeszła pomyślnie, proszę się zalogować</h1>
+                <h1>Operacja przeszła pomyślnie, proszę się zalogować</h1>
             </div>
         );
     }

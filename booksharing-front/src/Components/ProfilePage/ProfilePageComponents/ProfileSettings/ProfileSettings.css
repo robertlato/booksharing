@@ -1,2 +1,33 @@
+#databox {
+    float: left;
+    background-color: green;
+    width: 25%;
+    height: 500px;
+}
 
-  
+#formsbox {
+    float: left;
+    width: 75%;
+    height: 500px;
+}
+
+#formcolumn1 {
+    background-color: orange;
+    float: left;
+    width: 33%;
+    height: 500px;
+}
+
+#formcolumn2 {
+    background-color: red;
+    float: left;
+    width: 33%;
+    height: 500px;
+}
+
+#formcolumn3 {
+    background-color: purple;
+    float: left;
+    width: 33%;
+    height: 500px;
+}
