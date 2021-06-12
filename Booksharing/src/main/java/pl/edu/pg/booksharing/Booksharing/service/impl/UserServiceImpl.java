@@ -94,25 +94,25 @@ public class UserServiceImpl implements UserService {
         if (userEmail.equals(ownerEmail)) {
             User existingUser = userRepository.findByEmail(authentication.getName());
 
-            if (user.getFirstName() == null || !user.getFirstName().equals("")) {
+            if (user.getFirstName() != null || !user.getFirstName().equals("")) {
                 existingUser.setFirstName(user.getFirstName());
             }
 
-            if (user.getLastName() == null || !user.getLastName().equals("")) {
+            if (user.getLastName() != null || !user.getLastName().equals("")) {
                 existingUser.setLastName(user.getLastName());
             }
 
-            if (user.getPhoneNumber() == null || !user.getPhoneNumber().equals("")) {
+            if (user.getPhoneNumber() != null || !user.getPhoneNumber().equals("")) {
                 existingUser.setPhoneNumber(user.getPhoneNumber());
             }
 
-            if (user.getEmail() == null || !user.getEmail().equals("")) {
+            if (user.getEmail() != null || !user.getEmail().equals("")) {
                 existingUser.setEmail(user.getEmail());
             }
 
-            if (user.getPassword() == null || !user.getPassword().equals("")) {
+/*            if (user.getPassword() == null || !user.getPassword().equals("")) {
                 existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            }
+            }*/
 
             userRepository.save(existingUser);
 
@@ -135,7 +135,11 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(UserPasswordDto userPasswordDto) {
         Authentication authentication = authenticationFacade.getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());
-        user.setPassword(bCryptPasswordEncoder.encode(userPasswordDto.getPassword()));
+
+        if (user.getPassword() != null || !user.getPassword().equals("")) {
+            user.setPassword(bCryptPasswordEncoder.encode(userPasswordDto.getPassword()));
+        }
+       // user.setPassword(bCryptPasswordEncoder.encode(userPasswordDto.getPassword()));
         userRepository.save(user);
     }
 
