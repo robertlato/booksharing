@@ -12,6 +12,8 @@ import java.util.List;
 
 public class BorrowedBookInfoDto {
 
+    private Long id;
+
     private String title;
 
     private String isbn;
@@ -29,11 +31,12 @@ public class BorrowedBookInfoDto {
     }
 
     public BorrowedBookInfoDto(String title, String isbn, List<AuthorInfoForBookDto> authors,
-                            PublisherInfoForBookDto publisher) {
+                            PublisherInfoForBookDto publisher, Long id) {
         this.title = title;
         this.isbn = isbn;
         this.authors = authors;
         this.publisher = publisher;
+        this.id = id;
     }
 
 
@@ -78,4 +81,11 @@ public class BorrowedBookInfoDto {
         this.sharepoint = sharepoint;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
