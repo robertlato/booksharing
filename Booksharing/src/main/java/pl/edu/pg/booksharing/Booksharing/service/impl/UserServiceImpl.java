@@ -94,23 +94,23 @@ public class UserServiceImpl implements UserService {
         if (userEmail.equals(ownerEmail)) {
             User existingUser = userRepository.findByEmail(authentication.getName());
 
-            if (user.getFirstName() != null) {
+            if (!user.getFirstName().equals("")) {
                 existingUser.setFirstName(user.getFirstName());
             }
 
-            if (user.getLastName() != null) {
+            if (!user.getLastName().equals("")) {
                 existingUser.setLastName(user.getLastName());
             }
 
-            if (user.getPhoneNumber() != null) {
+            if (!user.getPhoneNumber().equals("")) {
                 existingUser.setPhoneNumber(user.getPhoneNumber());
             }
 
-            if (user.getEmail() != null) {
+            if (!user.getEmail().equals("")) {
                 existingUser.setEmail(user.getEmail());
             }
 
-            if (user.getPassword() != null) {
+            if (!user.getPassword().equals("")) {
                 existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             }
 
