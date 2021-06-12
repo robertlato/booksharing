@@ -12,6 +12,10 @@ class SearchTable extends React.Component {
             isModalOpened: false,
             hasComponentChanged: false,
             foundBook: "",
+            foundBookRateResponse: null,
+            foundBookReviewResponse: [],
+            isBookRateLoaded: false,
+            isBookReviewLoaded: false,
             columns: [
                 {
                     Header: "Id",
@@ -101,6 +105,8 @@ class SearchTable extends React.Component {
         this.onClickBookClose = this.onClickBookClose.bind(this);
         this.onClickBookOpen = this.onClickBookOpen.bind(this);
         this.onClickBorrowBook = this.onClickBorrowBook.bind(this);
+        this.loadBookRate = this.loadBookRate.bind(this);
+        this.loadBookReview = this.loadBookReview.bind(this);
     }
 
     onClickBookOpen(index) {
@@ -110,12 +116,66 @@ class SearchTable extends React.Component {
             isModalOpened: !this.state.isModalOpened,
             foundBook: foundBook,
         });
+        this.loadBookRate(index);
+        this.loadBookReview(index);
     }
 
     onClickBookClose() {
         this.setState({
             isModalOpened: !this.state.isModalOpened,
         });
+    }
+
+    loadBookRate(index) {
+        const BASE_URL = "http://localhost:8889/api/rating/avg/";
+        const EXPANDED_URL = BASE_URL + index;
+
+        axios
+            .get(EXPANDED_URL, {
+                headers: {
+                    authorization: "Basic " + localStorage.getItem("userToken"),
+                },
+            })
+            .then((res) => {
+                console.log(res);
+                if (res.status >= 200 && res.status <= 210) {
+                    console.log("działa: załadowanie oceny");
+                    this.setState({
+                        foundBookRateResponse: res.data,
+                        isBookRateLoaded: true,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log("NIE DZIAŁA: ZAŁADOWANIE OCENY");
+                console.log(error);
+            });
+    }
+
+    loadBookReview(index) {
+        const BASE_URL = "http://localhost:8889/api/review/";
+        const EXPANDED_URL = BASE_URL + index;
+
+        axios
+            .get(EXPANDED_URL, {
+                headers: {
+                    authorization: "Basic " + localStorage.getItem("userToken"),
+                },
+            })
+            .then((res) => {
+                console.log(res);
+                if (res.status >= 200 && res.status <= 210) {
+                    console.log("działa: załadowanie opini");
+                    this.setState({
+                        foundBookReviewResponse: res.data,
+                        isBookReviewLoaded: true,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log("NIE DZIAŁA: ZAŁADOWANIE OPINI");
+                console.log(error);
+            });
     }
 
     async onClickBorrowBook(bookId, sharePointId) {
@@ -239,6 +299,21 @@ class SearchTable extends React.Component {
                         {this.state.foundBook.sharePoint &&
                             this.state.foundBook.sharePoint.user.email}
                     </h3>
+                    <h3>
+                        Ocena:
+                        {this.state.isBookRateLoaded === true ? (
+                            <div>{this.state.foundBookRateResponse.avg}/5</div>
+                        ) : (
+                            "ocena się nie załadowała, przepraszamy"
+                        )}
+                    </h3>
+                    <h3>Opinie:</h3>
+                    {this.state.foundBookReviewResponse.map((item) => (
+                        <div id="reviewDiv">
+                            {" "}
+                            <p id="reviewText"> {item.review}</p>{" "}
+                        </div>
+                    ))}
 
                     <button onClick={this.onClickBookClose}> ZAMKNIJ </button>
                 </Modal>

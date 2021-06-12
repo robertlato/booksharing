@@ -422,3 +422,13 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+#reviewDiv {
+    background-color: #add8e6;
+}
+
+#reviewText {
+    color: green;
+    text-align: left;
+    margin-left: 15px;
+}

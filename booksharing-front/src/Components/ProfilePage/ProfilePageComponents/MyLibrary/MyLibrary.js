@@ -58,8 +58,11 @@ class MyLibrary extends React.Component {
                 {
                     Header: "Wypożyczył/a",
                     accessor: "userWhoBorrowed",
-                    Cell: (row) => {
-                        return row.value === "" ? "Nie wypożyczono" : row.value;
+                    // Cell: (row) => {
+                    //     return row.value === "" ? "Nie wypożyczono" : row.value;
+                    // },
+                    Cell: ({ row, original }) => {
+                        return original.borrowed === false ? "" : row.value;
                     },
                 },
                 {

@@ -11,6 +11,7 @@ class MyBorrowedBooks extends React.Component {
         this.state = {
             isModalOpened: false,
             rate: 0,
+            review: "",
             userBooks: [],
             columns: [
                 {
@@ -77,7 +78,7 @@ class MyBorrowedBooks extends React.Component {
                         return (
                             <button
                                 onClick={() => {
-                                    this.onClickModal(original.id);
+                                    this.onClickModal(original.book.id);
                                 }}
                             >
                                 Oceń
@@ -92,7 +93,9 @@ class MyBorrowedBooks extends React.Component {
         this.timeFilter = this.timeFilter.bind(this);
         this.onClickModal = this.onClickModal.bind(this);
         this.onClickRate = this.onClickRate.bind(this);
+        this.onClickReview = this.onClickReview.bind(this);
         this.onChangeRate = this.onChangeRate.bind(this);
+        this.onReviewChange = this.onReviewChange.bind(this);
     }
 
     componentDidMount() {
@@ -145,6 +148,10 @@ class MyBorrowedBooks extends React.Component {
         });
     }
 
+    onReviewChange(event) {
+        this.setState({ review: event.target.value });
+    }
+
     async onClickRate(event) {
         event.preventDefault();
 
@@ -173,6 +180,38 @@ class MyBorrowedBooks extends React.Component {
             })
             .catch((error) => {
                 console.log("NIE DODANO OCENY");
+                console.log(error);
+            });
+    }
+
+    async onClickReview(event) {
+        event.preventDefault();
+
+        axios
+            .post(
+                "http://localhost:8889/api/review/add",
+                {
+                    review: this.state.review,
+                    book: {
+                        id: this.state.bookIdWithRating,
+                    },
+                },
+                {
+                    headers: {
+                        authorization:
+                            "Basic " + localStorage.getItem("userToken"),
+                    },
+                }
+            )
+            .then((res) => {
+                if (res.status >= 200 && res.status <= 210) {
+                    window.alert("Dodano opinię!");
+                    console.log("dodano opinię");
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log("NIE DODANO OPINI");
                 console.log(error);
             });
     }
@@ -231,6 +270,22 @@ class MyBorrowedBooks extends React.Component {
                         <br />
                         <br />
                         <button onClick={this.onClickRate}>Oceń</button>
+                    </form>
+                    <form id="review-form">
+                        <label>
+                            <p>Recenzja</p>
+                            <textarea
+                                rows={5}
+                                cols={50}
+                                value={this.state.value}
+                                onChange={this.onReviewChange}
+                            />
+                        </label>
+                        <br />
+                        <br />
+                        <button onClick={this.onClickReview}>
+                            Dodaj Opinie
+                        </button>
                     </form>
                     <button onClick={this.onClickModal}> Zamknij </button>
                 </Modal>
