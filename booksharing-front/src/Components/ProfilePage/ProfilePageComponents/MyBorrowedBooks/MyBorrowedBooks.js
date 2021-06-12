@@ -62,7 +62,9 @@ class MyBorrowedBooks extends React.Component {
                     Header: "Data oddania",
                     accessor: "checkInDate",
                     Cell: (row) => {
-                        return row.value == null ? "Nie oddano" : this.timeFilter(row.value);
+                        return row.value == null
+                            ? "Nie oddano"
+                            : this.timeFilter(row.value);
                     },
                 },
                 {

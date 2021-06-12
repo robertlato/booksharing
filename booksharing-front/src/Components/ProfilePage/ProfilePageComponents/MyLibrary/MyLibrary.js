@@ -49,6 +49,20 @@ class MyLibrary extends React.Component {
                     accessor: "publisher.name",
                 },
                 {
+                    Header: "Data wypożyczenia",
+                    accessor: "borrowingDate",
+                    Cell: (row) => {
+                        return this.timeFilter(row.value);
+                    },
+                },
+                {
+                    Header: "Wypożyczył/a",
+                    accessor: "userWhoBorrowed",
+                    Cell: (row) => {
+                        return row.value === "" ? "Nie wypożyczono" : row.value;
+                    },
+                },
+                {
                     Header: "Stan",
                     accessor: "borrowed",
                     Cell: ({ row, original }) => {
@@ -69,10 +83,22 @@ class MyLibrary extends React.Component {
         };
         this.loadUserBooks = this.loadUserBooks.bind(this);
         this.onClickBookReturn = this.onClickBookReturn.bind(this);
+        this.timeFilter = this.timeFilter.bind(this);
     }
 
     componentDidMount() {
         this.loadUserBooks();
+    }
+
+    timeFilter(timeString) {
+        //example: 2021-02-11T16:42:06.484+00:00
+        if (timeString !== null) {
+            const timeFilteredString = timeString
+                .substr(0, 16)
+                .replace("T", " ");
+            return timeFilteredString;
+        }
+        return "Nie wypożyczono";
     }
 
     loadUserBooks() {
