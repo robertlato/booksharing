@@ -94,19 +94,19 @@ public class UserServiceImpl implements UserService {
         if (userEmail.equals(ownerEmail)) {
             User existingUser = userRepository.findByEmail(authentication.getName());
 
-            if (user.getFirstName() != null || !user.getFirstName().equals("")) {
+            if (!user.getFirstName().equals("") || user.getFirstName() != null ) {
                 existingUser.setFirstName(user.getFirstName());
             }
 
-            if (user.getLastName() != null || !user.getLastName().equals("")) {
+            if (!user.getLastName().equals("") || user.getLastName() != null ) {
                 existingUser.setLastName(user.getLastName());
             }
 
-            if (user.getPhoneNumber() != null || !user.getPhoneNumber().equals("")) {
+            if (!user.getPhoneNumber().equals("") || user.getPhoneNumber() != null) {
                 existingUser.setPhoneNumber(user.getPhoneNumber());
             }
 
-            if (user.getEmail() != null || !user.getEmail().equals("")) {
+            if (!user.getEmail().equals("") || user.getEmail() != null ) {
                 existingUser.setEmail(user.getEmail());
             }
 
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = authenticationFacade.getAuthentication();
         User user = userRepository.findByEmail(authentication.getName());
 
-        if (user.getPassword() != null || !user.getPassword().equals("")) {
+        if (!user.getPassword().equals("") || user.getPassword() != null) {
             user.setPassword(bCryptPasswordEncoder.encode(userPasswordDto.getPassword()));
         }
        // user.setPassword(bCryptPasswordEncoder.encode(userPasswordDto.getPassword()));
