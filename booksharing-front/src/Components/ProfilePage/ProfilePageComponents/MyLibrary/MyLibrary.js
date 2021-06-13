@@ -62,7 +62,9 @@ class MyLibrary extends React.Component {
                     //     return row.value === "" ? "Nie wypożyczono" : row.value;
                     // },
                     Cell: ({ row, original }) => {
-                        return original.borrowed === false ? "" : row.value;
+                        return original.borrowed === true
+                            ? row.userWhoBorrowed
+                            : "";
                     },
                 },
                 {
