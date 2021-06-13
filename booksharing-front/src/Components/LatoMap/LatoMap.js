@@ -278,39 +278,44 @@ class LatoMap extends React.Component {
     };
 
     async onClickBorrowBook(bookId, sharePointId) {
+
         console.log("inside onClickBorrowBook");
         if (AuthenticationService.isUserLoggedIn() === false) {
             window.alert("Musisz się zalogować!");
         } else {
-            axios
-                .post(
-                    "http://localhost:8889/api/borrowing",
-                    {
-                        book: {
-                            id: bookId,
+            var userIsDecided = window.confirm("Czy na pewno chcesz Wypożyczyć wybraną książkę?");
+
+            if (userIsDecided) {
+                axios
+                    .post(
+                        "http://localhost:8889/api/borrowing",
+                        {
+                            book: {
+                                id: bookId,
+                            },
+                            sharePoint: {
+                                id: sharePointId,
+                            },
                         },
-                        sharePoint: {
-                            id: sharePointId,
-                        },
-                    },
-                    {
-                        headers: {
-                            authorization:
-                                "Basic " + localStorage.getItem("userToken"),
-                        },
-                    }
-                )
-                .then((res) => {
-                    if (res.status === 200) {
-                        window.alert("Wypożyczono!");
-                        console.log("Wypożyczono!");
-                        window.location.reload();
-                    }
-                })
-                .catch((error) => {
-                    console.log("NIE WYPOŻYCZONO");
-                    console.log(error);
-                });
+                        {
+                            headers: {
+                                authorization:
+                                    "Basic " + localStorage.getItem("userToken"),
+                            },
+                        }
+                    )
+                    .then((res) => {
+                        if (res.status === 200) {
+                            window.alert("Wypożyczono!");
+                            console.log("Wypożyczono!");
+                            window.location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("NIE WYPOŻYCZONO");
+                        console.log(error);
+                    });
+            }
         }
     };
 
